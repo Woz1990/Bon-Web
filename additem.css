@@ -1,0 +1,128 @@
+body {
+    background-image: url('background1.jpg');
+}
+
+
+div.add-logo{
+	margin-left: 60px;
+	margin-top: 45px;
+}
+
+/* .container-fluid{ */
+	/* margin-top: 13px; */
+/* } */
+
+#input_food_properties{
+	position: static;
+	margin-top: 15px;
+	margin-left: 32px;
+	font-size: 1.5em;
+}
+
+.name_required_id{
+	margin-bottom:-10px;
+	height:40px;
+	font-size:70%;
+	text-bottom:true;
+	color:red
+}
+/* #input_food_name{ */
+	/* float: left; */
+    /* height: 30px; */
+    /* padding-right: 4px; */
+    /* padding-top: 2px; */
+    /* position: relative; */
+    /* text-align: right; */
+    /* vertical-align: middle; */
+    /* width: 73px; */
+/* } */
+.showAsterisk::after{
+	content:"*" ;
+	color:red;
+}
+.dontShowAsterisk::after{
+	display:none;
+}
+#food_type_dropdown{
+	margin-top: 16px;
+}
+
+#nutritional_values_container{
+	margin-left: -13px;
+	margin-top: 22px;
+}
+
+.input-group-addon{
+	min-width: 91px;
+	text-align:left;
+}
+
+.first_col_span.input-group-addon{
+	min-width: 119px;
+	text-align:left;
+}
+
+.fileinput{
+	margin-top: 20px;
+}
+
+.form-inline{
+	/* margin-top: 5px; */
+	margin-bottom: 20px;
+}
+
+.menu_image{
+	margin-top: 34px;
+	margin-left: 10px;
+}
+
+#choose_text{
+	font-size: 35px;
+}
+
+.images_text{
+	font-size: 25px;
+	margin-left: -10px;
+}
+
+.scaler{
+	margin-left: 75px;
+	font-size:23px;
+	font-style: normal;
+	cursor:pointer
+}
+
+.scaler:hover{
+	font-style: italic;
+}
+
+.check_p{
+	font-size: 25px;
+	text-align: center;
+}
+
+.btn-file{
+	margin-left: -10px;
+	margin-top: 10px;
+	min-width: 308px;
+}
+
+.image_properties{
+	min-width: 70px;
+	text-align:left;
+}
+
+
+
+.image_properties_input{
+	margin-left: -11px;
+}
+
+#first-image{
+	position: absolute;
+	/*right: 30px;*/
+	margin-left: 700px;
+	font-size: 110%;
+}
+
+

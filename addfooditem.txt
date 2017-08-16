@@ -1,0 +1,654 @@
+package ilyaandvladi.bonappetite;
+
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+/**
+ * Created by woz on 14/09/15.
+ */
+public class AddFoodItemActivity extends Activity {
+
+    private EditText editFoodName;
+
+
+    private CheckBox checkBoxBreakfast;
+    private CheckBox checkBoxLunch;
+    private CheckBox checkBoxDinner;
+    private CheckBox checkBoxSnacks;
+    TextView checkBoxesErrorView;
+
+    //editing food properties
+    private EditText editCalcium;
+    private EditText editNa;
+    private EditText editPotassium;
+    private EditText editAlcohol;
+    private EditText editMoisture;
+    private EditText editEnergy;
+    private EditText editProtein;
+    private EditText editFatness;
+    private EditText editCarbohydrates;
+    private Spinner chooseFoodCategory;
+    private TextView foodCategoryErrorView;
+
+    private int foodCategoryNumber;
+    private final int NOTHING_CHOSEN = 0;
+
+
+    //editing first image properties
+    private EditText editFirstImageFile;
+    private EditText editFirstImageWeight;
+    private EditText editFirstImageWidth;
+    private EditText editFirstImageHeight;
+    private Button browseFirstImageButton;
+
+
+    //editing second image properties
+    private EditText editSecondImageFile;
+    private EditText editSecondImageWeight;
+    private EditText editSecondImageWidth;
+    private EditText editSecondImageHeight;
+    private Button browseSecondImageButton;
+
+    //editing third image properties
+    private EditText editThirdImageFile;
+    private EditText editThirdImageWeight;
+    private EditText editThirdImageWidth;
+    private EditText editThirdImageHeight;
+    private Button browseThirdImageButton;
+
+    //editing fourth image properties
+    private EditText editFourthImageFile;
+    private EditText editFourthImageWeight;
+    private EditText editFourthImageWidth;
+    private EditText editFourthImageHeight;
+    private Button browseFourthImageButton;
+
+    //editing menu image
+    private EditText editMenuImageFile;
+    private Button browseMenuImageButton;
+
+    private Button backButton;
+    private Button addItemButton;
+
+
+    //food categories names array
+    String[] foodCategories = {"", "Milk Products", "Hot Drinks", "Cold Drinks",
+                    "Cheese", "Sausages", "Sauces", "Fruits", "Vegetables",
+                    "Cooked Vegetables", "Meat", "Fish", "Pasta & Pizza",
+                    "Sweets", "Cereals", "Eggs", "Bread", "Pastries", "Soup",
+                    "Alcohol", "Spreads"};
+
+    private final int FIRST_IMAGE = 1;
+    private final int SECOND_IMAGE = 2;
+    private final int THIRD_IMAGE = 3;
+    private final int FOURTH_IMAGE = 4;
+    private final int MENU_IMAGE = 5;
+
+    Controller controller = Controller.getInstance();
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.add_food_item_activity);
+
+
+        editFoodName = (EditText)findViewById(R.id.edit_item_name);
+
+        checkBoxBreakfast = (CheckBox)findViewById(R.id.breakfast_check_box);
+        checkBoxLunch = (CheckBox)findViewById(R.id.lunch_check_box);
+        checkBoxDinner = (CheckBox)findViewById(R.id.dinner_check_box);
+        checkBoxSnacks = (CheckBox)findViewById(R.id.snacks_check_box);
+        checkBoxesErrorView = (TextView)findViewById(R.id.checkbox_error);
+
+
+        editCalcium = (EditText)findViewById(R.id.edit_calcium);
+        editNa = (EditText)findViewById(R.id.edit_na);
+        editPotassium = (EditText)findViewById(R.id.edit_potassium);
+        editAlcohol = (EditText)findViewById(R.id.edit_alcohol);
+        editMoisture = (EditText)findViewById(R.id.edit_moisture);
+        editEnergy = (EditText)findViewById(R.id.edit_energy);
+        editProtein = (EditText)findViewById(R.id.edit_protein);
+        editFatness = (EditText)findViewById(R.id.edit_fatness);
+        editCarbohydrates = (EditText)findViewById(R.id.edit_carbohydrates);
+
+        chooseFoodCategory = (Spinner)findViewById(R.id.food_category_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_view, foodCategories);
+        chooseFoodCategory.setAdapter(adapter);
+        chooseFoodCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                foodCategoryNumber = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                foodCategoryNumber = NOTHING_CHOSEN;
+            }
+        });
+        foodCategoryErrorView = (TextView)findViewById(R.id.food_category_error);
+
+        editFirstImageFile = (EditText)findViewById(R.id.edit_first_image);
+        editFirstImageWeight = (EditText)findViewById(R.id.edit_first_image_weight);
+        editFirstImageWidth = (EditText)findViewById(R.id.edit_first_image_width);
+        editFirstImageHeight = (EditText)findViewById(R.id.edit_first_image_height);
+        browseFirstImageButton = (Button)findViewById(R.id.browse_first_image_button);
+
+        editSecondImageFile = (EditText)findViewById(R.id.edit_second_image);
+        editSecondImageWeight = (EditText)findViewById(R.id.edit_second_image_weight);
+        editSecondImageWidth = (EditText)findViewById(R.id.edit_second_image_width);
+        editSecondImageHeight = (EditText)findViewById(R.id.edit_second_image_height);
+        browseSecondImageButton = (Button)findViewById(R.id.browse_second_image_button);
+
+        editThirdImageFile = (EditText)findViewById(R.id.edit_third_image);
+        editThirdImageWeight = (EditText)findViewById(R.id.edit_third_image_weight);
+        editThirdImageWidth = (EditText)findViewById(R.id.edit_third_image_width);
+        editThirdImageHeight = (EditText)findViewById(R.id.edit_third_image_height);
+        browseThirdImageButton = (Button)findViewById(R.id.browse_third_image_button);
+
+        editFourthImageFile = (EditText)findViewById(R.id.edit_fourth_image);
+        editFourthImageWeight = (EditText)findViewById(R.id.edit_fourth_image_weight);
+        editFourthImageWidth = (EditText)findViewById(R.id.edit_fourth_image_width);
+        editFourthImageHeight = (EditText)findViewById(R.id.edit_fourth_image_height);
+        browseFourthImageButton = (Button)findViewById(R.id.browse_fourth_image_button);
+
+        editMenuImageFile = (EditText)findViewById(R.id.edit_menu_image);
+        browseMenuImageButton = (Button)findViewById(R.id.browse_menu_image_button);
+
+        backButton = (Button)findViewById(R.id.back_to_main_menu_button);
+        addItemButton = (Button)findViewById(R.id.add_food_item_button);
+
+        registerOnClick();
+
+
+    }
+
+    private void registerOnClick(){
+        registerOnClickBrowseButton(browseFirstImageButton);
+        registerOnClickBrowseButton(browseSecondImageButton);
+        registerOnClickBrowseButton(browseThirdImageButton);
+        registerOnClickBrowseButton(browseFourthImageButton);
+        registerOnClickBrowseButton(browseMenuImageButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED, intent);
+                finish();
+            }
+        });
+        addItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkIfAllEverythingFilled()) {
+                    String foodName = editFoodName.getText().toString();
+                    Cursor cursor = controller.getDataBase().query(DataBaseHelper.DATABASE_TABLE,
+                            null, DataBaseHelper.COLUMN_NAME + " = " +"'" + foodName + "'", null,
+                            null, null, null);
+                    if(cursor.getCount() != 0){
+                        editFoodName.setError("food item " + editFoodName.getText().toString() +
+                        " already exists");
+                        return;
+                    }
+
+                    int breakfast = 0, lunch = 0, dinner = 0, snacks = 0;
+                    if (checkBoxBreakfast.isChecked()) breakfast = 1;
+                    if (checkBoxLunch.isChecked()) lunch = 1;
+                    if (checkBoxDinner.isChecked()) dinner = 1;
+                    if (checkBoxSnacks.isChecked()) snacks = 1;
+
+
+                    double calcium = Double.parseDouble(editCalcium.getText().toString());
+                    double na = Double.parseDouble(editNa.getText().toString());
+                    double potassium = Double.parseDouble(editPotassium.getText().toString());
+                    double alcohol = Double.parseDouble(editAlcohol.getText().toString());
+                    double moisture = Double.parseDouble(editMoisture.getText().toString());
+                    double energy = Double.parseDouble(editEnergy.getText().toString());
+                    double protein = Double.parseDouble(editProtein.getText().toString());
+                    double fatness = Double.parseDouble(editFatness.getText().toString());
+                    double carbohydrates = Double.parseDouble(editCarbohydrates.getText().toString());
+
+
+                    int scaleUnit = 0;
+                    int program = 1;
+                    String imageFileFirst = editFirstImageFile.getText().toString();
+                    double weightFirst = Double.parseDouble(editFirstImageWeight.getText().toString());
+                    int imageWidthFirst = Integer.parseInt(editFirstImageWidth.getText().toString());
+                    int imageHeightFirst = Integer.parseInt(editFirstImageHeight.getText().toString());
+                    imageFileFirst = controller.getFilesHandler().copyFileAndFileName(imageFileFirst, foodName);
+
+                    String imageFileSecond = "null_image";
+                    double weightSecond = 1;
+                    int imageWidthSecond = 1;
+                    int imageHeightSecond = 1;
+
+                    String imageFileThird = "null_image";
+                    double weightThird = 1;
+                    int imageWidthThird = 1;
+                    int imageHeightThird = 1;
+
+                    String imageFileFourth = "null_image";
+                    double weightFourth = 1;
+                    int imageWidthFourth = 1;
+                    int imageHeightFourth = 1;
+
+
+                    if (!editSecondImageFile.getText().toString().isEmpty()) {
+                        imageFileSecond = editSecondImageFile.getText().toString();
+                        weightSecond = Double.parseDouble(editSecondImageWeight.getText().toString());
+                        imageWidthSecond = Integer.parseInt(editSecondImageWidth.getText().toString());
+                        imageHeightSecond = Integer.parseInt(editSecondImageHeight.getText().toString());
+                        program = 2;
+                        imageFileSecond = controller.getFilesHandler().copyFileAndFileName(imageFileSecond,
+                                                                                            foodName + "_t1");
+                    }
+
+                    if (!editThirdImageFile.getText().toString().isEmpty()) {
+                        if (imageFileSecond == "null_image") {
+                            imageFileSecond = editThirdImageFile.getText().toString();
+                            weightSecond = Double.parseDouble(editThirdImageWeight.getText().toString());
+                            imageWidthSecond = Integer.parseInt(editThirdImageWidth.getText().toString());
+                            imageHeightSecond = Integer.parseInt(editThirdImageHeight.getText().toString());
+                            program = 2;
+                            imageFileSecond = controller.getFilesHandler().copyFileAndFileName(imageFileSecond,
+                                                                                                foodName + "_t2");
+                        } else {
+                            imageFileThird = editThirdImageFile.getText().toString();
+                            weightThird = Double.parseDouble(editThirdImageWeight.getText().toString());
+                            imageWidthThird = Integer.parseInt(editThirdImageWidth.getText().toString());
+                            imageHeightThird = Integer.parseInt(editThirdImageHeight.getText().toString());
+                            imageFileThird = controller.getFilesHandler().copyFileAndFileName(imageFileThird,
+                                                                                            foodName + "_t3");
+
+                        }
+                    }
+
+                    if (!editFourthImageFile.getText().toString().isEmpty()) {
+                        if (imageFileSecond == "null_image") {
+                            imageFileSecond = editFourthImageFile.getText().toString();
+                            weightSecond = Double.parseDouble(editFourthImageWeight.getText().toString());
+                            imageWidthSecond = Integer.parseInt(editFourthImageWidth.getText().toString());
+                            imageHeightSecond = Integer.parseInt(editFourthImageHeight.getText().toString());
+                            program = 2;
+                            imageFileSecond = controller.getFilesHandler().copyFileAndFileName(imageFileSecond,
+                                                                                                foodName + "_t2");
+                        } else if (imageFileThird == "null_image") {
+                            imageFileThird = editFourthImageFile.getText().toString();
+                            weightThird = Double.parseDouble(editFourthImageWeight.getText().toString());
+                            imageWidthThird = Integer.parseInt(editFourthImageWidth.getText().toString());
+                            imageHeightThird = Integer.parseInt(editFourthImageHeight.getText().toString());
+                            imageFileThird = controller.getFilesHandler().copyFileAndFileName(imageFileThird,
+                                                                                                foodName + "_t3");
+                        } else {
+                            imageFileFourth = editFourthImageFile.getText().toString();
+                            weightFourth = Double.parseDouble(editFourthImageWeight.getText().toString());
+                            imageWidthFourth = Integer.parseInt(editFourthImageWidth.getText().toString());
+                            imageHeightFourth = Integer.parseInt(editFourthImageHeight.getText().toString());
+                            imageFileFourth = controller.getFilesHandler().copyFileAndFileName(imageFileFourth,
+                                                                                                foodName + "_t4");
+                        }
+                    }
+
+                    String menuImageFile = editMenuImageFile.getText().toString();
+                    menuImageFile = controller.getFilesHandler().copyFileAndFileName(menuImageFile, foodName + "_m");
+
+                    ContentValues values = new ContentValues();
+                    values.put(DataBaseHelper.COLUMN_NAME, foodName);
+                    values.put(DataBaseHelper.COLUMN_SCALE_UNIT, scaleUnit);
+                    values.put(DataBaseHelper.COLUMN_PROGRAM, program);
+                    values.put(DataBaseHelper.COLUMN_BREAKFAST, breakfast);
+                    values.put(DataBaseHelper.COLUMN_LUNCH, lunch);
+                    values.put(DataBaseHelper.COLUMN_DINNER, dinner);
+                    values.put(DataBaseHelper.COLUMN_SNACKS, snacks);
+                    values.put(DataBaseHelper.COLUMN_ENERGY, energy);
+                    values.put(DataBaseHelper.COLUMN_PROTEIN, protein);
+                    values.put(DataBaseHelper.COLUMN_FATNESS, fatness);
+                    values.put(DataBaseHelper.COLUMN_CARBOHYDRATES, carbohydrates);
+                    values.put(DataBaseHelper.COLUMN_CALCIUM, calcium);
+                    values.put(DataBaseHelper.COLUMN_NA, na);
+                    values.put(DataBaseHelper.COLUMN_POTASSIUM, potassium);
+                    values.put(DataBaseHelper.COLUMN_ALCOHOL, alcohol);
+                    values.put(DataBaseHelper.COLUMN_MOISTURE, moisture);
+                    values.put(DataBaseHelper.COLUMN_FOOD_TYPE, foodCategoryNumber-1);
+
+                    values.put(DataBaseHelper.COLUMN_WEIGHT_FIRST, weightFirst);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_FILE_FIRST, imageFileFirst);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_HEIGHT_FIRST, imageHeightFirst);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_WIDTH_FIRST, imageWidthFirst);
+
+                    values.put(DataBaseHelper.COLUMN_WEIGHT_SECOND, weightSecond);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_FILE_SECOND, imageFileSecond);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_HEIGHT_SECOND, imageHeightSecond);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_WIDTH_SECOND, imageWidthSecond);
+
+                    values.put(DataBaseHelper.COLUMN_WEIGHT_THIRD, weightThird);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_FILE_THIRD, imageFileThird);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_HEIGHT_THIRD, imageHeightThird);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_WIDTH_THIRD, imageWidthThird);
+
+                    values.put(DataBaseHelper.COLUMN_WEIGHT_FOURTH, weightFourth);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_FILE_FOURTH, imageFileFourth);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_HEIGHT_FOURTH, imageHeightFourth);
+                    values.put(DataBaseHelper.COLUMN_IMAGE_WIDTH_FOURTH, imageWidthFourth);
+
+
+                    values.put(DataBaseHelper.COLUMN_MENU_IMAGE, menuImageFile);
+
+
+                    if(controller.getDataBase().insert(DataBaseHelper.DATABASE_TABLE, null, values) != -1){
+                        Context context = getApplicationContext();
+                        CharSequence text = "Food item was added";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        unsetAllEditTexts();
+                    }
+                    else{
+                        Context context = getApplicationContext();
+                        CharSequence text = "Failed to add food item";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                    //AddFoodItemTesterClass.printItemProperties(foodName, controller.getDataBase());
+
+                }
+            }
+        });
+    }
+
+    private void unsetAllEditTexts(){
+        editFoodName.setText(null);
+        checkBoxBreakfast.setChecked(false);
+        checkBoxLunch.setChecked(false);
+        checkBoxDinner.setChecked(false);
+        checkBoxSnacks.setChecked(false);
+
+        editCalcium.setText(null);
+        editNa.setText(null);
+        editPotassium.setText(null);
+        editAlcohol.setText(null);
+        editMoisture.setText(null);
+        editEnergy.setText(null);
+        editProtein.setText(null);
+        editFatness.setText(null);
+        editCarbohydrates.setText(null);
+        chooseFoodCategory.setSelection(NOTHING_CHOSEN);
+        foodCategoryNumber = NOTHING_CHOSEN;
+        editFirstImageFile.setText(null);
+        editFirstImageWeight.setText(null);
+        editFirstImageWidth.setText(null);
+        editFirstImageHeight.setText(null);
+
+
+        editSecondImageFile.setText(null);
+        editSecondImageWeight.setText(null);
+        editSecondImageWidth.setText(null);
+        editSecondImageHeight.setText(null);
+        browseSecondImageButton.setText(null);
+
+
+        editThirdImageFile.setText(null);
+        editThirdImageWeight.setText(null);
+        editThirdImageWidth.setText(null);
+        editThirdImageHeight.setText(null);
+
+
+        editFourthImageFile.setText(null);
+        editFourthImageWeight.setText(null);
+        editFourthImageWidth.setText(null);
+        editFourthImageHeight.setText(null);
+
+
+        editMenuImageFile.setText(null);
+    }
+
+
+
+    private void registerOnClickBrowseButton(Button browseButton){
+        browseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int Image;
+                switch(view.getId()){
+                    case(R.id.browse_first_image_button):
+                        Image = FIRST_IMAGE;
+                        break;
+                    case(R.id.browse_second_image_button):
+                        Image = SECOND_IMAGE;
+                        break;
+                    case(R.id.browse_third_image_button):
+                        Image = THIRD_IMAGE;
+                        break;
+                    case(R.id.browse_fourth_image_button):
+                        Image = FOURTH_IMAGE;
+                        break;
+                    case(R.id.browse_menu_image_button):
+                    default: Image = MENU_IMAGE;
+                }
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, Image);
+            }
+        });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String filePath;
+        if(resultCode == RESULT_OK) {
+            filePath = controller.getFilesHandler().getPath(data.getData());
+            switch (requestCode) {
+                case FIRST_IMAGE:
+                    editFirstImageFile.setText(filePath);
+                    break;
+                case SECOND_IMAGE:
+                    editSecondImageFile.setText(filePath);
+                    break;
+                case THIRD_IMAGE:
+                    editThirdImageFile.setText(filePath);
+                    break;
+                case FOURTH_IMAGE:
+                    editFourthImageFile.setText(filePath);
+                    break;
+                case MENU_IMAGE:
+                    editMenuImageFile.setText(filePath);
+                    break;
+            }
+        }
+    }
+
+    private boolean checkIfMealTypeChosen(){
+        if(checkBoxBreakfast.isChecked()) return true;
+        if(checkBoxLunch.isChecked()) return true;
+        if(checkBoxDinner.isChecked()) return true;
+        if(checkBoxSnacks.isChecked()) return true;
+        return false;
+    }
+
+    private boolean checkIfAllEverythingFilled(){
+        unsetErrors();
+        boolean allFilled = true;
+        if(editFoodName.getText().toString().isEmpty()){
+            editFoodName.setError("Mandatory");
+            allFilled = false;
+        }
+        if(!checkIfMealTypeChosen()){
+            checkBoxesErrorView.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editCalcium.getText().toString().isEmpty()){
+            editCalcium.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editNa.getText().toString().isEmpty()){
+            editNa.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editPotassium.getText().toString().isEmpty()){
+            editPotassium.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editAlcohol.getText().toString().isEmpty()){
+            editAlcohol.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editMoisture.getText().toString().isEmpty()){
+            editMoisture.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editEnergy.getText().toString().isEmpty()){
+            editEnergy.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editProtein.getText().toString().isEmpty()){
+            editProtein.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editFatness.getText().toString().isEmpty()){
+            editFatness.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editCarbohydrates.getText().toString().isEmpty()){
+            editCarbohydrates.setError("Mandatory");
+            allFilled = false;
+        }
+        if(foodCategoryNumber == NOTHING_CHOSEN){
+            foodCategoryErrorView.setError("Mandatory");
+            allFilled = false;
+        }
+        Log.d("DebugTag", "before first image");
+        if(editFirstImageFile.getText().toString().isEmpty()){
+            editFirstImageFile.setError("Mandatory");
+            allFilled = false;
+        }
+        else if(!controller.getFilesHandler().checkIfFileExists(editFirstImageFile.getText().toString())){
+            editFirstImageFile.setError("File doesn't exist");
+            allFilled = false;
+        }
+
+        if(editFirstImageWeight.getText().toString().isEmpty()){
+            editFirstImageWeight.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editFirstImageWidth.getText().toString().isEmpty()){
+            editFirstImageWidth.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editFirstImageHeight.getText().toString().isEmpty()){
+            editFirstImageHeight.setError("Mandatory");
+            allFilled = false;
+        }
+        if(editMenuImageFile.getText().toString().isEmpty()){
+            editMenuImageFile.setError("Mandatory");
+            allFilled = false;
+        }
+        else if(!controller.getFilesHandler().checkIfFileExists(editMenuImageFile.getText().toString())){
+            editMenuImageFile.setError("File doesn't exist");
+            allFilled = false;
+        }
+        if(!editSecondImageFile.getText().toString().isEmpty()){
+            if(!controller.getFilesHandler().checkIfFileExists(editSecondImageFile.getText().toString())){
+                editSecondImageFile.setError("File doesn't exist");
+                allFilled = false;
+            }
+            if(editSecondImageWeight.getText().toString().isEmpty()){
+                editSecondImageWeight.setError("Mandatory");
+                allFilled = false;
+            }
+            if(editSecondImageWidth.getText().toString().isEmpty()){
+                editSecondImageWidth.setError("Mandatory");
+                allFilled = false;
+            }
+            if(editSecondImageHeight.getText().toString().isEmpty()){
+                editSecondImageHeight.setError("Mandatory");
+                allFilled = false;
+            }
+        }
+        if(!editThirdImageFile.getText().toString().isEmpty()){
+            if(!controller.getFilesHandler().checkIfFileExists(editThirdImageFile.getText().toString())){
+                editThirdImageFile.setError("File doesn't exist");
+                allFilled = false;
+            }
+            if(editThirdImageWeight.getText().toString().isEmpty()){
+                editThirdImageWeight.setError("Mandatory");
+                allFilled = false;
+            }
+            if(editThirdImageWidth.getText().toString().isEmpty()){
+                editThirdImageWidth.setError("Mandatory");
+                allFilled = false;
+            }
+            if(editThirdImageHeight.getText().toString().isEmpty()){
+                editThirdImageHeight.setError("Mandatory");
+                allFilled = false;
+            }
+        }
+        if(!editFourthImageFile.getText().toString().isEmpty()){
+            if(!controller.getFilesHandler().checkIfFileExists(editFourthImageFile.getText().toString())){
+                editFourthImageFile.setError("File doesn't exist");
+                allFilled = false;
+            }
+            if(editFourthImageWeight.getText().toString().isEmpty()){
+                editFourthImageWeight.setError("Mandatory");
+                allFilled = false;
+            }
+            if(editFourthImageWidth.getText().toString().isEmpty()){
+                editFourthImageWidth.setError("Mandatory");
+                allFilled = false;
+            }
+            if(editFourthImageHeight.getText().toString().isEmpty()){
+                editFourthImageHeight.setError("Mandatory");
+                allFilled = false;
+            }
+        }
+        return allFilled;
+    }
+
+
+    private void unsetErrors(){
+        editFoodName.setError(null);
+        checkBoxesErrorView.setError(null);
+        editCalcium.setError(null);
+        editNa.setError(null);
+        editPotassium.setError(null);
+        editAlcohol.setError(null);
+        editMoisture.setError(null);
+        editEnergy.setError(null);
+        editProtein.setError(null);
+        editFatness.setError(null);
+        editCarbohydrates.setError(null);
+        foodCategoryErrorView.setError(null);
+        editFirstImageFile.setError(null);
+        editFirstImageWeight.setError(null);
+        editFirstImageWidth.setError(null);
+        editFirstImageHeight.setError(null);
+        editSecondImageFile.setError(null);
+        editSecondImageWeight.setError(null);
+        editSecondImageWidth.setError(null);
+        editSecondImageHeight.setError(null);
+        editThirdImageFile.setError(null);
+        editThirdImageWeight.setError(null);
+        editThirdImageWidth.setError(null);
+        editThirdImageHeight.setError(null);
+        editFourthImageFile.setError(null);
+        editFourthImageWeight.setError(null);
+        editFourthImageWidth.setError(null);
+        editFourthImageHeight.setError(null);
+        editMenuImageFile.setError(null);
+    }
+}

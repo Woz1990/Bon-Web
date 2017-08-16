@@ -1,0 +1,48 @@
+html {
+    overflow-y: scroll;
+} 
+
+body {
+    background-image: url('background1.jpg');
+}
+
+
+#embed-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #006DCC;
+}
+
+#embed-nav li {
+    border-left:1px solid #bbb;
+	float:right;
+}
+
+#embed-nav li:first-child{
+	margin-right: 200px;
+}
+
+#embed-nav li:last-child {
+    border-left: none;
+}
+
+#embed-nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+	font-size: 110%;
+}
+
+#embed-nav li a:hover:not(.active) {
+    background-color: rgb(46, 109, 230);
+	color: white;
+}
+
+#embed-nav li a:active {
+    background-color: rgb(46, 109, 230);
+	color: white;
+}

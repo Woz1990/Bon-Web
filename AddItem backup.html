@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="additem.css">
+
+		<!-- <!-- ******************************* Scripts ************************************* -->
+	  	<!-- JQuery -->
+	  	<!-- <script src="js/jquery-1.12.4.min.js"></script> -->
+	  	<!-- Bootstrap javascript -->
+		<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script> -->
+		<!-- <script src="jquery-1.12.4.min.js"></script> -->
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+		  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+		  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+	  	
+	
+	</head>
+
+	<body>
+	<div class="embed-nav group" id="embed-nav">
+			<ul>
+			  <li><a href="#login">Log Out</a></li>
+			  <li><a href="#showAllFoodItems">Food List</a></li>
+			  <li><a href="#addItem">Add Food Item</a></li>
+			</ul>
+		</div>
+		<!-- <div ng-app="FoodItemsApp" ng-controller="FoodItemsController"> -->
+			<div  class="add-logo">
+				<img src="img/try2.jpg" alt="AddFood" style="width:160px;height:130px">
+			</div>
+			<div class="container-fluid">
+				<div class="row" >
+					<div class="col-lg-5 col-md-6 col-sm-6 col-xs-11" id="input_food_properties">
+						<br ng-show="!foodNameRequired" class="name_required_id">
+						<div ng-show="foodNameRequired" class="name_required_id">
+						*Required
+						</div>
+						<div class="input-group"  id="input_food_name">
+								<input type="text" class="form-control" placeholder="Food Name" size="26" ng-model=	"foodName"></input>
+						</div>
+						<div class="dropdown" id="food_type_dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">{{dropdownButtonText}}
+							  	<span class="caret"></span></button>
+							  	<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+									<li ng-repeat="type in foodTypes"><a style="cursor:pointer" ng-click="FoodTypeSelected(type)">{{type}}</a></li>
+							  	</ul>
+						</div>
+						<h2 id="chooseMealType" ng-class="!mealTypeChosen&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Choose meal type:</h2>
+						<label class="checkbox-inline"><input type="checkbox" value="Breakfast" id="breakfastBox" ng-model="brekfastCheckbox">Breakfast</label>
+						<label class="checkbox-inline"><input type="checkbox" value="Lunch" id="lunchBox" ng-model="lunchCheckbox">Lunch</label>
+						<label class="checkbox-inline"><input type="checkbox" value="Dinner" id="dinnerBox" ng-model="dinnerCheckbox">Dinner</label>
+						<label class="checkbox-inline"><input type="checkbox" value="Snacks" id="snacksBox" ng-model="snacksCheckbox">Snacks</label>
+						
+						<h3> Nutritional values</h3>
+						<div class="container-fluid" id="nutritional_values_container">
+							<div class="row">
+								<div class="col-lg-6 col-md-5 col-sm-8 col-xs-11" id="input_values_first_col">
+									<div class = "input-group">
+							         	<span class = "input-group-addon first_col_span" ng-class="!calciumFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Calcium</span>
+							         	<input type = "text" class = "form-control" ng-model="calciumModel">
+							      	</div>
+							      	<div class = "input-group">
+							         	<span class = "input-group-addon first_col_span" ng-class="!potassiumFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Potassium</span>
+							         	<input type = "text" class = "form-control" ng-model="potassiumModel">
+							      	</div>
+							      	<div class = "input-group">
+							         	<span class = "input-group-addon first_col_span" ng-class="!moistureFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Moisture</span>
+							         	<input type = "text" class = "form-control" ng-model="moistureModel">
+							      	</div>
+							      	<div class = "input-group">
+							         	<span class = "input-group-addon first_col_span" ng-class="!proteinFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Protein</span>
+							         	<input type = "text" class = "form-control" ng-model="proteinModel">
+							      	</div>
+							      	<div class = "input-group" >
+							         	<span class = "input-group-addon first_col_span" ng-class="!carbohydratesFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Carbohydrates</span>
+							         	<input type = "text" class = "form-control" ng-model="carbohydratesModel">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-5 col-md-5 col-sm-8 col-xs-11">
+									<div class = "input-group">
+							         	<span class = "input-group-addon" ng-class="!naFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Na</span>
+							         	<input type = "text" class = "form-control" ng-model="naModel">
+							      	</div>
+							      	<div class = "input-group">
+							         	<span class = "input-group-addon" ng-class="!alcoholFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Alcohol</span>
+							         	<input type = "text" class = "form-control" ng-model="alcoholModel">
+							      	</div>
+							      	<div class = "input-group">
+							         	<span class = "input-group-addon" ng-class="!energyFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Energy</span>
+							         	<input type = "text" class = "form-control" ng-model="energyModel">
+							      	</div>
+							      	<div class = "input-group">
+							         	<span class = "input-group-addon" ng-class="!fatnessFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Fatness</span>
+							         	<input type = "text" class = "form-control" ng-model="fatnessModel">
+							      	</div>	
+						      	</div>
+					      	</div>
+					    </div>
+
+					    <div class="fileinput fileinput-new menu_image" data-provides="fileinput">
+							<span class="images_text" ng-class="!menuImageFileFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Menu image</span>
+							<p></p>
+						    <span class="btn btn-default btn-file"><input type="file" fileread="menuImageFile"/></span>
+						    <!-- <span class="fileinput-filename"></span> -->
+						</div>
+						
+					     
+
+					</div>
+					<div class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+						<p class="text-center" id="choose_text">Choose images</p>
+
+						<div class="fileinput fileinput-new" data-provides="fileinput"  accept="image/*">
+							<span class="images_text" ng-class="!firstImageFileFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">First image</span>
+							<p></p>
+						    <span class="btn btn-default btn-file"><input type="file" fileread="firstImageFile"/></span>
+							<span class="scaler" ng-click="OpenScaler()"> Image Scaler </span>
+						    <!-- <span class="fileinput-filename"></span> -->
+						</div>
+
+						<form class="form-inline" role="form">
+							<div class="row">
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties" ng-class="!firstImageWeightFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Weight</span>
+							         	<input type = "text" class = "form-control" ng-model="firstImageWeightModel">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties" ng-class="!firstImageWidthFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Width</span>
+							         	<input type = "text" class = "form-control" id="firstImageWidth" ng-model="firstImageWidthModel">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties" ng-class="!firstImageHeightFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Height</span>
+							         	<input type = "text" class = "form-control" id="firstImageHeight" ng-model="firstImageHeightModel">
+							      	</div>
+						      	</div>
+					      	</div>
+						</form>
+
+
+						<div class="fileinput fileinput-new" data-provides="fileinput">
+							<span class="images_text">Second image</span>
+							<p></p>
+						    <span class="btn btn-default btn-file"><input type="file" fileread="secondImageFile"/></span>
+						    <!-- <span class="fileinput-filename"></span> -->
+						</div>
+
+						<form class="form-inline" role="form">
+							<div class="row">
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Weight</span>
+							         	<input type = "text" class = "form-control" ng-model="secondImageWeightModel">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Width</span>
+							         	<input type = "text" class = "form-control" id="secondImageWidth">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6"">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Height</span>
+							         	<input type = "text" class = "form-control" id="secondImageHeight">
+							      	</div>
+						      	</div>
+					      	</div>
+						</form>
+
+
+						<div class="fileinput fileinput-new" data-provides="fileinput">
+							<span class="images_text">Third image</span>
+							<p></p>
+						    <span class="btn btn-default btn-file"><input type="file" fileread="thirdImageFile"/></span>
+						    <!-- <span class="fileinput-filename"></span> -->
+						</div>
+
+						<form class="form-inline" role="form">
+							<div class="row">
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Weight</span>
+							         	<input type = "text" class = "form-control" ng-model="thirdImageWeightModel">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Width</span>
+							         	<input type = "text" class = "form-control" id="thirdImageWidth">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Height</span>
+							         	<input type = "text" class = "form-control" id="thirdImageHeight">
+							      	</div>
+						      	</div>
+					      	</div>
+						</form>
+
+
+						<div class="fileinput fileinput-new" data-provides="fileinput">
+							<span class="images_text">Fourth image</span>
+							<p></p>
+						    <span class="btn btn-default btn-file"><input type="file" fileread="fourthImageFile"/></span>
+						    <!-- <span class="fileinput-filename"></span> -->
+						</div>
+
+						<form class="form-inline" role="form">
+							<div class="row">
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Weight</span>
+							         	<input type = "text" class = "form-control" ng-model="fourthImageWeightModel">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Width</span>
+							         	<input type = "text" class = "form-control" id="fourthImageWidth">
+							      	</div>
+						      	</div>
+						      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class = "input-group image_properties_input">
+							         	<span class = "input-group-addon image_properties">Height</span>
+							         	<input type = "text" class = "form-control" id="fourthImageHeight">
+							      	</div>
+						      	</div>
+					      	</div>
+						</form>
+						
+							<button ng-click="AddItem()">
+								<span class="glyphicon glyphicon-plus "></span> Add Item
+							</button>
+
+
+
+
+					</div>
+				</div>
+				
+			</div>
+		
+
+
+			<!-- <div class="meal-type">
+				<div class="first-image">
+					Second Image
+					<input name ="second_image_file" type="file"> 
+					Weight
+					<input name="food_weight_second" type="text" size=4>
+					Width
+					<input name="image_width_second" type="text" size=4>
+					Height
+					<input name="image_height_second" type="text" size=4>
+				</div>
+				Choose meal type:
+				<input name="breakfast" type="checkbox"> Breakfast
+				<input name="lunch" type="checkbox"> Lunch
+				<input name="dinner" type="checkbox"> Dinner
+				<input name="snacks" type="checkbox"> Snacks
+			</div> -->
+			
+		<!-- </div> -->
+		<!-- <script> -->
+			<!-- var AddItemsModule = angular.module("FoodItemsApp", []); -->
+			
+			
+			<!-- AddItemsModule.directive("fileread", [function () { -->
+				<!-- return { -->
+				<!-- scope: { -->
+					<!-- fileread: "=" -->
+				<!-- }, -->
+				<!-- link: function (scope, element, attributes) { -->
+					<!-- element.bind("change", function (changeEvent) { -->
+						<!-- var reader = new FileReader(); -->
+						<!-- reader.onload = function (loadEvent) { -->
+							<!-- scope.$apply(function () { -->
+								<!-- scope.fileread = loadEvent.target.result; -->
+							<!-- }); -->
+						<!-- } -->
+						<!-- reader.readAsDataURL(changeEvent.target.files[0]); -->
+					<!-- }); -->
+				<!-- } -->
+				<!-- } -->
+			<!-- }]); -->
+			
+			<!-- AddItemsModule.controller("FoodItemsController", ['$scope', '$http', '$window', function ($scope, $http, $window) { -->
+			
+				<!-- $scope.foodName = ""; -->
+				<!-- $scope.brekfastCheckbox = ""; -->
+				<!-- $scope.lunchCheckbox = ""; -->
+				<!-- $scope.dinnerCheckbox = ""; -->
+				<!-- $scope.snacksCheckbox = ""; -->
+				
+				<!-- $scope.calciumModel = ""; -->
+				<!-- $scope.potassiumModel = ""; -->
+				<!-- $scope.moistureModel = ""; -->
+				<!-- $scope.proteinModel = ""; -->
+				<!-- $scope.carbohydratesModel = ""; -->
+				<!-- $scope.naModel = ""; -->
+				<!-- $scope.alcoholModel = ""; -->
+				<!-- $scope.energyModel = ""; -->
+				<!-- $scope.fatnessModel = ""; -->
+				<!-- $scope.menuImageFile = ""; -->
+				<!-- $scope.fourthImageHeightModel = "" -->
+			
+				<!-- $scope.AddItem = function() { -->
+					<!-- if ($scope.foodName  == ""){ -->
+						<!-- $scope.foodName = "6"; -->
+					<!-- } -->
+					<!-- if ($scope.menuImageFile != ""){ -->
+						<!-- $scope.calciumModel = "7" -->
+					<!-- } -->
+				<!-- } -->
+				
+				<!-- $scope.OpenScaler = function() { -->
+					 <!-- $window.open("crop image.html"); -->
+				<!-- } -->
+				
+			<!-- }]); -->
+		<!-- </script> -->
+	</body>
+
+</html>

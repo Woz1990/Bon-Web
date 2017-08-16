@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="showfood.css">
+<div class="embed-nav group" id="embed-nav">
+			<ul>
+			  <li><a href="#login">Log Out</a></li>
+			  <li><a href="#showAllFoodItems">Food List</a></li>
+			  <li><a href="#addItem">Add Food Item</a></li>
+			</ul>
+		</div>
+<div class="container">
+		
+		<div id="searchInput"><input type="text" ng-model="searchName.name" placeholder="Search..">
+		</div>
+		<table class="table" id="foodList">
+			<tr>
+				<th id="nameSection">Name</th>
+				<th id="imageSection">Image</th>
+				<th id="foodTypeSection">Food Type</th>
+				<th id="mealTypeSection">Meal Type</th>
+				<th id="actionsSection">Actions</th>
+			</tr>
+		<tbody data-ng-repeat="item in items | filter:searchName">
+		  <tr>
+			<td><div class="nameSection">{{item.name}}</div></td>
+			<td class="imageSection"><img ng-src={{item.menu_image}}></img></td>
+			<td><div class="foodTypeSection">{{item.food_type}}</div></td>
+			<td><div class="mealTypeSection">{{item.meal_type}}</div></td>
+			<td>
+				<div class="actionsSection">
+					<table>
+						<tr>
+							<td class="viewButton" ng-show="!item.expand" ng-click="openNewTr(item)">Show more</td>
+							<td class="viewButton" ng-show="item.expand" ng-click="openNewTr(item)">Show less</td>
+							<td class="editButton">Edit</td>
+							<td class="deleteButton">Delete</td>
+						</tr>
+				  </table>
+			  </div>
+		  </td>
+		  </tr>
+		  <tr data-ng-show="item.expand">
+		  <td colspan="5">
+				<table class="expanded-table">
+					<tr>
+						<th class="energySection">Energy</th>
+						<th class="proteinSection">Protein</th>
+						<th class="fatnessSection">Fatness</th>
+						<th class="carbohydratesSection">Carbohydrates</th>
+						<th class="calciumSection">Calcium</th>
+						<th class="naSection">Na</th>
+						<th class="potassiumSection">Potassium</th>
+						<th class="alcoholSection">Alcohol</th>
+						<th class="waterSection">Moisture</th>
+					</tr>
+					<tr>
+						<td>{{item.energy}}</td>
+						<td>{{item.protein}}</td>
+						<td>{{item.fatness}}</td>
+						<td>{{item.carbohydrates}}</td>
+						<td>{{item.calcium}}</td>
+						<td>{{item.na}}</td>
+						<td>{{item.potassium}}</td>
+						<td>{{item.alcohol}}</td>
+						<td>{{item.water}}</td>
+					</tr>
+					<tr>
+						<th>Weight</th>
+						<th>Image</th>
+						<th>Weight</th>
+						<th>Image 2</th>
+						<th>Weight</th>
+						<th>Image 3</th>
+						<th>Weight</th>
+						<th>Image 4</th>
+					</tr>
+					<tr>
+						<td>{{item.weight}}</td>
+						<td><img class="foodImagesClass" src={{item.img_file}}></img></td>
+						<td>{{item.weight2}}</td>
+						<td><img class="foodImagesClass" src={{item.img_file2}} alt="No image"></img></td>
+						<td>{{item.weight3}}</td>
+						<td><img class="foodImagesClass" src={{item.img_file3}} alt="No image"></img></td>
+						<td>{{item.weight4}}</td>
+						<td><img class="foodImagesClass" src={{item.img_file4}} alt="No image"></img></td>
+					</tr>
+				</table>
+			</td>
+		  </tr>
+		  
+		  <!-- <tr data-ng-show="item.expand"> -->
+            <!-- <td colspan="5">Check</td> -->
+          <!-- </tr> -->
+	  </tbody>
+		</table>
+</div>
