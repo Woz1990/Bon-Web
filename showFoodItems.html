@@ -1,27 +1,33 @@
 <link rel="stylesheet" href="showfood.css">
 <div class="embed-nav group" id="embed-nav">
-			<ul>
-			  <li><a href="#login">Log Out</a></li>
-			  <li><a href="#showAllFoodItems">Food List</a></li>
-			  <li><a href="#addItem">Add Food Item</a></li>
-			</ul>
-		</div>
-<div class="container">
+	<ul>
+	  <li><a href="#login">Log Out</a></li>
+	  <li><a href="#showAllFoodItems">Food List</a></li>
+	  <li><a href="#addItem">Add Food Item</a></li>
+	</ul>
+</div>
+<div class="container" id="foodContainer">
+	<div id="searchInput"><input type="text" ng-model="searchName.name" placeholder="Search..">
+	</div>   
+
+
 		
-		<div id="searchInput"><input type="text" ng-model="searchName.name" placeholder="Search..">
-		</div>
-		<table class="table" id="foodList">
-			<tr>
+  <div class="table-responsive">    
+<!-- <table class="table" id="foodList"> -->
+  <table class="table">
+    <thead>
+     <tr>
 				<th id="nameSection">Name</th>
 				<th id="imageSection">Image</th>
 				<th id="foodTypeSection">Food Type</th>
 				<th id="mealTypeSection">Meal Type</th>
 				<th id="actionsSection">Actions</th>
 			</tr>
-		<tbody data-ng-repeat="item in items | filter:searchName">
+    </thead>
+   <tbody data-ng-repeat="item in items | filter:searchName">
 		  <tr>
 			<td><div class="nameSection">{{item.name}}</div></td>
-			<td class="imageSection"><img ng-src={{item.menu_image}}></img></td>
+			<td class="imageSection"><img ng-src={{item.menu_image}} ng-style={{item.menu_img_style}}></img></td>
 			<td><div class="foodTypeSection">{{item.food_type}}</div></td>
 			<td><div class="mealTypeSection">{{item.meal_type}}</div></td>
 			<td>
@@ -30,7 +36,7 @@
 						<tr>
 							<td class="viewButton" ng-show="!item.expand" ng-click="openNewTr(item)">Show more</td>
 							<td class="viewButton" ng-show="item.expand" ng-click="openNewTr(item)">Show less</td>
-							<td class="editButton">Edit</td>
+							<td class="editButton" ng-click="UpdateItem(item)">Edit</td>
 							<td class="deleteButton">Delete</td>
 						</tr>
 				  </table>
@@ -38,7 +44,7 @@
 		  </td>
 		  </tr>
 		  <tr data-ng-show="item.expand">
-		  <td colspan="5">
+		  <td  colspan="5">
 				<table class="expanded-table">
 					<tr>
 						<th class="energySection">Energy</th>
@@ -63,6 +69,7 @@
 						<td>{{item.water}}</td>
 					</tr>
 					<tr>
+						<th>Hebrew & Arabic</th>
 						<th>Weight</th>
 						<th>Image</th>
 						<th>Weight</th>
@@ -73,22 +80,22 @@
 						<th>Image 4</th>
 					</tr>
 					<tr>
+						<td>{{item.hebrew_name}} <br> {{item.arabic_name}}</td>
 						<td>{{item.weight}}</td>
-						<td><img class="foodImagesClass" src={{item.img_file}}></img></td>
+						<td><img class="foodImagesClass" src={{item.img_file}} ng-style={{item.first_img_style}}></img></td>
 						<td>{{item.weight2}}</td>
-						<td><img class="foodImagesClass" src={{item.img_file2}} alt="No image"></img></td>
+						<td><img class="foodImagesClass" src={{item.img_file2}} ng-style={{item.second_img_style}} alt="No image"></img></td>
 						<td>{{item.weight3}}</td>
-						<td><img class="foodImagesClass" src={{item.img_file3}} alt="No image"></img></td>
+						<td><img class="foodImagesClass" src={{item.img_file3}} ng-style={{item.third_img_style}} alt="No image"></img></td>
 						<td>{{item.weight4}}</td>
-						<td><img class="foodImagesClass" src={{item.img_file4}} alt="No image"></img></td>
+						<td><img class="foodImagesClass" src={{item.img_file4}} ng-style={{item.fourth_img_style}} alt="No image"></img></td>
 					</tr>
 				</table>
 			</td>
 		  </tr>
 		  
-		  <!-- <tr data-ng-show="item.expand"> -->
-            <!-- <td colspan="5">Check</td> -->
-          <!-- </tr> -->
 	  </tbody>
-		</table>
+  </table>
+  </div>
 </div>
+

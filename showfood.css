@@ -3,13 +3,15 @@ body {
 }
 
 
-
-#searchInput{
-	position: absolute;
-	top: 26%;
-	left: 5%;
-	font-size: 125%;
+#foodContainer{
+	/* position: absolute; */
+	margin-top: 8%;
+	margin-left: 5%;
 }
+
+/* #searchInput{ */
+	/* font-size: 125%; */
+/* } */
 
 #titles{
 	font-size:150%;
@@ -95,10 +97,10 @@ td div{
 	cursor:pointer;
 }
 
-.imageSection img{
-	width:63px;
-	height: 63px;
-}
+/*.imageSection img{
+	width:75px;
+	height: 75px;
+}*/
 
 .viewButton:hover {
     background-color: #555;

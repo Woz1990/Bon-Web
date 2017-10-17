@@ -2,25 +2,164 @@ body {
     background-image: url('background1.jpg');
 }
 
+.glyphicon-remove{
+	font-size: 150%;
+}
 
-div.add-logo{
-	margin-left: 60px;
+.fileinput button{
+	position: relative;
 	margin-top: 45px;
+	margin-left: 15px;
+}
+
+.fileinput input{
+	/*margin-top: 10px;*/
+}
+
+@media screen and (min-width:992px){
+	div.add-logo{
+		margin-left: 60px;
+		margin-top: 45px;
+	}
+	
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		margin-left: 32px;
+		font-size: 1.5em;
+	}
+	
+	.input-group-addon{
+		min-width: 85px;
+	}
+	
+	.first_col_span.input-group-addon{
+		min-width: 127px;
+	}
+	
+	.btn-file{
+		margin-left: -10px;
+		margin-top: 10px;
+		min-width: 308px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+		margin-left: 10px;
+	}
+
+	#names_input_section .form-group{
+		margin-left: 50px;
+	}
+
+	#names_input_section label{
+		margin-left: 100px;
+	}
+
+	#names_input_section .form-control{
+		max-width: 320px;
+	}
+
+/*	#addButton{
+		width: 160px;
+		height: 30px;
+	}*/
+	
+}
+
+@media screen and (min-width:768px) and (max-width:991px) {
+	div.add-logo{
+		margin-left: 60px;
+		margin-top: 45px;
+	}
+	
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		margin-left: 32px;
+		font-size: 1.5em;
+	}
+	
+	.input-group-addon{
+		min-width: 127px;
+	}
+	
+	/* .first_col_span.input-group-addon{ */
+		/* min-width: 120px; */
+		/* text-align:left; */
+	/* } */
+	
+	.btn-file{
+		margin-left: -10px;
+		margin-top: 10px;
+		min-width: 308px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+		margin-left: 10px;
+	}
+	
+	#addButton{
+		align:left;
+		/* margin-bottom: 15px; */
+	}
+}
+
+@media screen and (min-width:390px) and (max-width:767px) {
+	div.add-logo{
+		margin-left: 60px;
+		margin-top: 45px;
+	}
+	
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		/*margin-left: 32px;*/
+		font-size: 1.5em;
+	}
+
+	.image_properties_input .form-control{
+		width: 65px;
+	}
+	
+	.input-group-addon{
+		min-width: 127px;
+	}
+	
+	#nutritional_values_container input{
+		width: 95px;
+	}
+
+	/* .first_col_span.input-group-addon{ */
+		/* min-width: 120px; */
+		/* text-align:left; */
+	/* } */
+	
+	.btn-file{
+		margin-left: -10px;
+		margin-top: 10px;
+		min-width: 308px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+	}
+	
+	#addButton{
+		margin-left: 45%;
+		/* margin-bottom: 15px; */
+	}
 }
 
 /* .container-fluid{ */
 	/* margin-top: 13px; */
 /* } */
 
-#input_food_properties{
-	position: static;
-	margin-top: 15px;
-	margin-left: 32px;
-	font-size: 1.5em;
-}
+
 
 .name_required_id{
-	margin-bottom:-10px;
+	margin-bottom:-20px;
 	height:40px;
 	font-size:70%;
 	text-bottom:true;
@@ -38,6 +177,7 @@ div.add-logo{
 /* } */
 .showAsterisk::after{
 	content:"*" ;
+	font-size:1.5em;
 	color:red;
 }
 .dontShowAsterisk::after{
@@ -47,20 +187,16 @@ div.add-logo{
 	margin-top: 16px;
 }
 
-#nutritional_values_container{
-	margin-left: -13px;
-	margin-top: 22px;
-}
+/* #nutritional_values_container{ */
+	/* margin-left: -13px; */
+	/* margin-top: 22px; */
+/* } */
 
-.input-group-addon{
-	min-width: 91px;
-	text-align:left;
-}
+/* .input-group-addon{ */
+	/* min-width: 91px; */
+	/* text-align:left; */
+/* } */
 
-.first_col_span.input-group-addon{
-	min-width: 119px;
-	text-align:left;
-}
 
 .fileinput{
 	margin-top: 20px;
@@ -71,23 +207,18 @@ div.add-logo{
 	margin-bottom: 20px;
 }
 
-.menu_image{
-	margin-top: 34px;
-	margin-left: 10px;
-}
-
 #choose_text{
 	font-size: 35px;
 }
 
 .images_text{
 	font-size: 25px;
-	margin-left: -10px;
+	/* margin-left: -10px; */
 }
 
 .scaler{
-	margin-left: 75px;
-	font-size:23px;
+	/* margin-left: 75px; */
+	font-size:29px;
 	font-style: normal;
 	cursor:pointer
 }
@@ -101,14 +232,8 @@ div.add-logo{
 	text-align: center;
 }
 
-.btn-file{
-	margin-left: -10px;
-	margin-top: 10px;
-	min-width: 308px;
-}
-
 .image_properties{
-	min-width: 70px;
+	min-width: 80px;
 	text-align:left;
 }
 
@@ -124,5 +249,69 @@ div.add-logo{
 	margin-left: 700px;
 	font-size: 110%;
 }
+
+#testForm div:after {
+    position:absolute;
+    content:'*';
+    color:red;
+    right:-10px;
+    top:0;
+}
+
+/* #addButton{ */
+	/* margin-left: 45%; */
+	/* margin-bottom: 15px; */
+/* } */
+
+@media screen and (max-width: 389px){
+	div.add-logo{
+		/* margin-left: 60px; */
+		margin-top: 45px;
+	}
+	
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		/* margin-left: 32px; */
+		font-size: 1.5em;
+	}
+	
+	#nutritional_values_container .input-group-addon{
+		min-width: 120px;
+		text-align:left;
+	}
+	
+	.btn-file{
+		max-width: 260px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+	}
+	
+	#addButton{
+		margin-left: 40%;
+		/* margin-bottom: 15px; */
+	}
+	
+	/* #nutritional_values_container.input-group-addon{ */
+		/* min-width: 200px; */
+		/* text-align:left; */
+	/* } */
+	
+	/* #nutritional_values_container.form-control{ */
+		/* min-width: 725px; */
+	/* } */
+}
+
+/* @media screen and (max-width: 667px){ */
+	/* .btn-file{ */
+	/* margin-left: -10px; */
+	/* margin-top: 10px; */
+	/* min-width: 208px; */
+/* } */
+/* } */
+
+/* 304 min */
 
 
