@@ -29,7 +29,6 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
 
         print "in here"
-        self.picturesTotalTime = 0
         if self.path == "/showFoodItems":
             database = []
             with open("database.csv", "r+") as csvFile:
@@ -54,7 +53,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     menuImageFile  = self.get_image_file_url(menuImageFileName)
                     with Image.open('pictures/{}.png'.format(menuImageFileName)) as image:
                         menuImageWidth, menuImageHeight = image.size
-                    foodItem = {"name": row[1], "program" : row[2], "breakfast" : row[3], "lunch": row[4], "dinner":row[5], "snacks":row[6], "energy":row[7], "protein":row[8], "fatness":row[9], "carbohydrates":row[10], "calcium":row[11], "na":row[12], "potassium":row[13],"alcohol": row[14], "moisture":row[15], "category":row[16], "firstImage":{"imageWeight":row[17], "imageFileName":firstImageFileName, "imageFile" : firstImageFile,"imageWidth":row[19], "imageHeight":row[20]}, "secondImage":{"imageWeight":row[21], "imageFileName":secondImageFileName, "imageFile" : secondmageFile,"imageWidth":row[23], "imageHeight":row[24]}, "thirdImage":{"imageWeight":row[25], "imageFileName": thirdImageFileName, "imageFile" : thirdImageFile,"imageWidth":row[27], "imageHeight":row[28]}, "fourthImage":{"imageWeight":row[29], "imageFileName":fourthImageFileName,"imageFile" : fourthImageFile,"imageWidth":row[31], "imageHeight":row[32]}, "menuImage":{"imageFileName":menuImageFileName, "file": menuImageFile, "imageWidth":menuImageWidth, "imageHeight":menuImageHeight}, "hebrewName":row[34], "arabicName":row[35]}
+                    foodItem = {"id": row[0], "name": row[1], "program" : row[2], "breakfast" : row[3], "lunch": row[4], "dinner":row[5], "snacks":row[6], "energy":row[7], "protein":row[8], "fatness":row[9], "carbohydrates":row[10], "calcium":row[11], "na":row[12], "potassium":row[13],"alcohol": row[14], "moisture":row[15], "category":row[16], "firstImage":{"imageWeight":row[17], "imageFileName":firstImageFileName, "imageFile" : firstImageFile,"imageWidth":row[19], "imageHeight":row[20]}, "secondImage":{"imageWeight":row[21], "imageFileName":secondImageFileName, "imageFile" : secondmageFile,"imageWidth":row[23], "imageHeight":row[24]}, "thirdImage":{"imageWeight":row[25], "imageFileName": thirdImageFileName, "imageFile" : thirdImageFile,"imageWidth":row[27], "imageHeight":row[28]}, "fourthImage":{"imageWeight":row[29], "imageFileName":fourthImageFileName,"imageFile" : fourthImageFile,"imageWidth":row[31], "imageHeight":row[32]}, "menuImage":{"imageFileName":menuImageFileName, "file": menuImageFile, "imageWidth":menuImageWidth, "imageHeight":menuImageHeight}, "hebrewName":row[34].decode('utf-8'), "arabicName":row[35].decode('utf-8')}
                     database.append(foodItem)
 
            # database = {"key":"fuck"}
@@ -64,7 +63,6 @@ class MyHandler(BaseHTTPRequestHandler):
             self.end_headers()
             #database2 = simplejson.dumps(database)
             self.wfile.write(simplejson.dumps(database))
-            print self.picturesTotalTime
         return
 
     def do_POST(self):
@@ -90,6 +88,8 @@ class MyHandler(BaseHTTPRequestHandler):
             data = simplejson.loads(self.data_string)
 
             name = data['name']
+            hebrewName = data['hebrewName']
+            arabicName = data['arabicName']
             foodType = data['foodType']
             mealType = data['mealType']
             calcium = data['calcium']
@@ -108,6 +108,7 @@ class MyHandler(BaseHTTPRequestHandler):
             fourthImage = data["fourthImage"]
             with open("database.csv", "r+") as csvFile:
                 reader = csv.reader(csvFile)
+                rowNumber = 0
                 for row in reader:
                     if row[1].lower() == name.lower():
                         self.send_response(403)
@@ -116,11 +117,11 @@ class MyHandler(BaseHTTPRequestHandler):
                         self.end_headers()
                         self.wfile.write("Food item already exists. Try update instead")
                         return
-
+                    rowNumber += 1
                 reader = csv.reader(csvFile)
                 writer = csv.writer(csvFile)
-                for row in reader:
-                    writer.writerow(row)
+                # for row in reader:
+                #     writer.writerow(row)
 
                 program = 1
                 menuImageFileName = name.lower().replace(" ", "_")+"_menu"
@@ -176,7 +177,7 @@ class MyHandler(BaseHTTPRequestHandler):
                     fourthImageFileName = "zzz_null_image" 
                     fourthImageHeight = fourthImageWidth = fourthImageWeight = 1
 
-                newrow = (1, name, program, mealType[0], mealType[1], mealType[2], mealType[3], energy, protein, fatness, carbohydrates, calcium, na, potassium, alcohol, moisture, foodType, firstImageWeight, firstImageFileName, firstImageWidth, firstImageHeight, secondImageWeight, secondImageFileName, secondImageWidth, secondImageHeight, thirdImageWeight, thirdImageFileName, thirdImageWidth, thirdImageHeight, fourthImageWeight, fourthImageFileName, fourthImageWidth, fourthImageHeight, menuImageFileName)
+                newrow = (rowNumber, name, program, mealType[0], mealType[1], mealType[2], mealType[3], energy, protein, fatness, carbohydrates, calcium, na, potassium, alcohol, moisture, foodType, firstImageWeight, firstImageFileName, firstImageWidth, firstImageHeight, secondImageWeight, secondImageFileName, secondImageWidth, secondImageHeight, thirdImageWeight, thirdImageFileName, thirdImageWidth, thirdImageHeight, fourthImageWeight, fourthImageFileName, fourthImageWidth, fourthImageHeight, menuImageFileName, hebrewName.encode("utf-8"), arabicName.encode("utf-8"))
                 writer.writerow(newrow)
 
 
@@ -187,43 +188,134 @@ class MyHandler(BaseHTTPRequestHandler):
 
             return
 
-        # if self.path == "/showFoodItems":
-        #     database = []
-        #     with open("database.csv", "r+") as csvFile:
-        #         reader = csv.reader(csvFile)
-        #         rownum = 0
-        #         for row in reader:
-        #             if rownum == 0:
-        #                 rownum += 1
-        #                 continue
-        #             if len(row) != 36:
-        #                 continue
-        #             firstImageFileName = row[18]
-        #             firstImageFile = self.get_image_file_url(firstImageFileName)
-        #             secondImageFileName = row[22]
-        #             secondmageFile = self.get_image_file_url(secondImageFileName)
-        #             thirdImageFileName = row[26]
-        #             thirdImageFile = self.get_image_file_url(thirdImageFileName)
-        #             fourthImageFileName = row[30]
-        #             fourthImageFile = self.get_image_file_url(fourthImageFileName)
-        #             menuImageFileName = row[33]
-        #             menuImageFile  = self.get_image_file_url(menuImageFileName)
-        #             with Image.open('pictures/{}.png'.format(menuImageFileName)) as image:
-        #                 print "get image width"
-        #                 menuImageWidth, menuImageHeight = image.size
-        #                 print menuImageWidth, menuImageHeight
-        #             foodItem = {"name": row[1], "program" : row[2], "breakfast" : row[3], "lunch": row[4], "dinner":row[5], "snacks":row[6], "energy":row[7], "protein":row[8], "fatness":row[9], "carbohydrates":row[10], "calcium":row[11], "na":row[12], "potassium":row[13],"alcohol": row[14], "moisture":row[15], "category":row[16], "firstImage":{"imageWeight":row[17], "imageFileName":firstImageFileName, "imageFile" : firstImageFile,"imageWidth":row[19], "imageHeight":row[20]}, "secondImage":{"imageWeight":row[21], "imageFileName":secondImageFileName, "imageFile" : secondmageFile,"imageWidth":row[23], "imageHeight":row[24]}, "thirdImage":{"imageWeight":row[25], "imageFileName": thirdImageFileName, "imageFile" : thirdImageFile,"imageWidth":row[27], "imageHeight":row[28]}, "fourthImage":{"imageWeight":row[29], "imageFileName":fourthImageFileName,"imageFile" : fourthImageFile,"imageWidth":row[31], "imageHeight":row[32]}, "menuImage":{"imageFileName":menuImageFileName, "file": menuImageFile,"imageWidth":menuImageWidth, "imageHeight":menuImageHeight}, "hebrewName":row[34], "arabicName":row[35]}
-        #             database.append(foodItem)
-        #     print "show food items"
-        #     #self.wfile.write("database")
-        #     #database = {"key":"fuck"}
-        #     self.send_response(200)
-        #     self.send_header('Access-Control-Allow-Credentials', 'true')
-        #     self.send_header('Access-Control-Allow-Origin', '*')
-        #     self.send_header('Content-type',    'application/json')
-        #     self.end_headers()
-        #     #database2 = simplejson.dumps(database)
-        #     self.wfile.write(simplejson.dumps(database))
+        if self.path == "/updateFoodItem":
+            self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+            data = simplejson.loads(self.data_string)
+
+            id = data['itemId']
+            name = data['name']
+            hebrewName = data['hebrewName']
+            arabicName = data['arabicName']
+            foodType = data['foodType']
+            mealType = data['mealType']
+            calcium = data['calcium']
+            potassium  = data['potassium']
+            moisture = data['moisture']
+            protein = data['protein']
+            carbohydrates = data['carbohydrates']
+            na = data['na']
+            alcohol = data['alcohol']
+            energy = data['energy']
+            fatness = data['fatness']
+            menuImageFile = data['menuImageFile']
+            firstImage = data["firstImage"]
+            secondImage = data["secondImage"]
+            thirdImage = data["thirdImage"]
+            fourthImage = data["fourthImage"]
+ 
+            with open("database.csv", "r") as csvFile:
+                reader = csv.reader(csvFile)
+                rowsList = [] 
+                for row in reader:
+                    if row[0] == id:
+                        program = 1
+                        menuImageFileName = name.lower().replace(" ", "_")+"_menu"
+                        with open("pictures/{}.png".format(menuImageFileName), "w") as decoded:
+                            decoded.write(base64.decodestring(menuImageFile.split(",")[1]))
+
+                        firstImageFile, firstImageHeight, firstImageWidth, firstImageWeight = self.get_image_details(firstImage)
+                        firstImageFileName = name.lower().replace(" ", "_")+"_s"
+                        with open("pictures/{}.png".format(firstImageFileName), "w") as decoded:
+                            decoded.write(base64.decodestring(firstImageFile.split(",")[1]))
+
+                        if secondImage != "null":
+
+                            program = 2
+                            secondImageFile, secondImageHeight, secondImageWidth, secondImageWeight = self.get_image_details(secondImage)
+                            secondImageFileName = name.lower().replace(" ", "_")+"_m"
+                            with open("pictures/{}.png".format(secondImageFileName), "w") as decoded:
+                                decoded.write(base64.decodestring(secondImageFile.split(",")[1]))
+
+                            if thirdImage != "null":
+
+                                thirdImageFile, thirdImageHeight, thirdImageWidth, thirdImageWeight = self.get_image_details(thirdImage)
+                                thirdImageFileName = name.lower().replace(" ", "_")+"_l"
+                                with open("pictures/{}.png".format(thirdImageFileName), "w") as decoded:
+                                    decoded.write(base64.decodestring(thirdImageFile.split(",")[1]))
+
+                                if fourthImage != "null":
+
+                                    fourthImageFile, fourthImageHeight, fourthImageWidth, fourthImageWeight = self.get_image_details(fourthImage)
+                                    fourthImageFileName = name.lower().replace(" ", "_")+"_xl"
+                                    with open("pictures/{}.png".format(fourthImageFileName), "w") as decoded:
+                                        decoded.write(base64.decodestring(fourthImageFile.split(",")[1]))
+
+                                else:
+
+                                    fourthImageFileName = "zzz_null_image" 
+                                    fourthImageHeight = fourthImageWidth = fourthImageWeight = 1
+
+                            else:
+
+                                thirdImageFileName = "zzz_null_image" 
+                                thirdImageHeight = thirdImageWidth = thirdImageWeight = 1
+
+                                fourthImageFileName = "zzz_null_image" 
+                                fourthImageHeight = fourthImageWidth = fourthImageWeight = 1
+
+                        else:
+
+                            secondImageFileName = "zzz_null_image" 
+                            secondImageHeight = secondImageWidth = secondImageWeight = 1
+
+                            thirdImageFileName = "zzz_null_image" 
+                            thirdImageHeight = thirdImageWidth = thirdImageWeight = 1
+
+                            fourthImageFileName = "zzz_null_image" 
+                            fourthImageHeight = fourthImageWidth = fourthImageWeight = 1
+
+                        newrow = (id, name, program, mealType[0], mealType[1], mealType[2], mealType[3], energy, protein, fatness, carbohydrates, calcium, na, potassium, alcohol, moisture, foodType, firstImageWeight, firstImageFileName, firstImageWidth, firstImageHeight, secondImageWeight, secondImageFileName, secondImageWidth, secondImageHeight, thirdImageWeight, thirdImageFileName, thirdImageWidth, thirdImageHeight, fourthImageWeight, fourthImageFileName, fourthImageWidth, fourthImageHeight, menuImageFileName, hebrewName.encode("utf-8"), arabicName.encode("utf-8"))
+                        rowsList.append(newrow)
+                    else:
+                        rowsList.append(row)
+
+
+            with open("database.csv", "w") as csvFile:   
+                print len(rowsList)
+                writer = csv.writer(csvFile)
+                #for row in rowsList:
+                writer.writerows(rowsList)
+            self.send_response(200)
+            self.send_header('Access-Control-Allow-Credentials', 'true')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+
+            return
+
+        if self.path == "/deleteFoodItem":
+            self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+            data = simplejson.loads(self.data_string)
+            id = data['itemId']
+
+            with open("database.csv", "r") as csvFile:
+                reader = csv.reader(csvFile)
+                rowsList = [] 
+                for row in reader:
+                    if row[0] != id:
+                        rowsList.append(row)
+
+            with open("database.csv", "w") as csvFile:   
+                print len(rowsList)
+                writer = csv.writer(csvFile)
+                writer.writerows(rowsList)
+
+            self.send_response(200)
+            self.send_header('Access-Control-Allow-Credentials', 'true')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+
+            return
+
 
     def get_image_details(self, image):
         return image['imageFile'], image['imageHeight'], image['imageWidth'], image['imageWeight']
@@ -232,12 +324,9 @@ class MyHandler(BaseHTTPRequestHandler):
         if image_file_name != "zzz_null_image":
             file_path = 'pictures/{}.png'.format(image_file_name)
             if os.path.isfile(file_path):
-                startTime = time.time()
                 image = open(file_path, 'rb') #open binary file in read mode
                 image_read = image.read()
                 encoded = "data:image/png;base64,"+base64.encodestring(image_read)
-                endTime = time.time()
-                self.picturesTotalTime += startTime - endTime
                 #print encoded
                 return encoded
         return "null"

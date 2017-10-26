@@ -1,4 +1,4 @@
-var mainApp = angular.module("mainApp", ['ngRoute']);
+var mainApp = angular.module("mainApp", ['ngRoute', 'angularModalService']);
 
 mainApp.config(function($routeProvider) {
 	$routeProvider
@@ -23,6 +23,10 @@ mainApp.config(function($routeProvider) {
 		});
 });
 
+
+
+
+
 mainApp.factory('dataSharingService', [function($rootScope){
 	var sharedService = {};
 
@@ -37,12 +41,20 @@ mainApp.factory('dataSharingService', [function($rootScope){
 		//$rootScope.$broadcast('handleBroadcast');
 	}
 
+	sharedService.GetList = function(){
+		return this.foodItemsList;
+	}
+
 	sharedService.IfListSet = function(){
 		return this.listSet;
 	}
 
 	sharedService.GetFoodItemToUpdate = function(){
 		return this.foodItemsList[this.ItemToUpdateIndex];
+	}
+
+	sharedService.UpdateFoodItem = function(foodItem){
+		this.foodItemsList[this.ItemToUpdateIndex] = foodItem;
 	}
 
 	sharedService.SetFoodItemToUpdateIndex = function(index){
@@ -57,12 +69,25 @@ mainApp.factory('dataSharingService', [function($rootScope){
 		return this.ifToUpdate;
 	}
 
+	sharedService.AddFoodItem = function(foodItem){
+		alert("in service add food item");
+		this.foodItemsList.push(foodItem);
+	}
+
+	sharedService.DeleteFoodItem = function(index){
+		this.foodItemsList.splice(index, 1);
+	}
+
 	return sharedService;
 
 }]);
 
-mainApp.controller('ShowFoodItemsController', function($scope, $window, $http, $location, dataSharingService) {
+
+
+
+mainApp.controller('ShowFoodItemsController', function($scope, $window, $http, $location, dataSharingService, ModalService) {
 	//alert("in here")
+	dataSharingService.SetToUpdate(false);
 	$scope.items = [/* { name: "Bitter Chocolate", meal_type: "Breakfast Lunch Dinner",
 						energy: 98.85, protein:18.589,  fatness: 1.016,
 						carbohydrates: 2.633, calcium:10.888, na:423.359,
@@ -84,94 +109,137 @@ mainApp.controller('ShowFoodItemsController', function($scope, $window, $http, $
 						weight4 : 0 , img_file4 : "zzz_null_image",
 						expand : false}*/];
 	
+	if(dataSharingService.IfListSet()){
+		$scope.items = dataSharingService.GetList();
+	}
+	else{
+		var request = $http({
+			    method: "get",
+			    url: "http://127.0.0.1:3000/showFoodItems",
+			});
 
-	var request = $http({
-		    method: "get",
-		    url: "http://127.0.0.1:3000/showFoodItems",
-		});
-
-		request.success(function (data) {
-			
-			$scope.items = [];
-			items = [];
-			for(i = 0; i < 20; i++){
-			//alert(i + " iteration")
-			if(data[i].menuImage.file.search("null") > -1) continue;
-			imgProperties = GetImageProperties(null, parseInt(data[i].menuImage.imageWidth), parseInt(data[i].menuImage.imageHeight));
-            menuImgStyle = {"width" : imgProperties[0],
-							"height" : imgProperties[1]};
-			imgProperties = GetImageProperties(null, parseInt(data[i].firstImage.imageWidth), parseInt(data[i].firstImage.imageHeight));
-            firstImgStyle = {"width" : imgProperties[0],
-							"height" : imgProperties[1]};
-			secondImgStyle = thirdImgStyle = fourthImgStyle = {"width" : 90,
-																"height" : 90};
-			if(data[i].secondImage.imageFile != "null"){
-				imgProperties = GetImageProperties(null, parseInt(data[i].secondImage.imageWidth), parseInt(data[i].secondImage.imageHeight));
-            	secondImgStyle = {"width" : imgProperties[0],
+			request.success(function (data) {
+				
+				$scope.items = [];
+				items = [];
+				for(i = 0; i < 20; i++){
+				//alert(i + " iteration")
+				if(data[i].menuImage.file.search("null") > -1) continue;
+				imgProperties = GetImageProperties(null, parseInt(data[i].menuImage.imageWidth), parseInt(data[i].menuImage.imageHeight));
+	            menuImgStyle = {"width" : imgProperties[0],
 								"height" : imgProperties[1]};
-
-				if(data[i].thirdImage.imageFile != "null"){
-					imgProperties = GetImageProperties(null, parseInt(data[i].thirdImage.imageWidth), parseInt(data[i].thirdImage.imageHeight));
-	            	thirdImgStyle = {"width" : imgProperties[0],
+				imgProperties = GetImageProperties(null, parseInt(data[i].firstImage.imageWidth), parseInt(data[i].firstImage.imageHeight));
+	            firstImgStyle = {"width" : imgProperties[0],
+								"height" : imgProperties[1]};
+				secondImgStyle = thirdImgStyle = fourthImgStyle = {"width" : 90,
+																	"height" : 90};
+				if(data[i].secondImage.imageFile != "null"){
+					imgProperties = GetImageProperties(null, parseInt(data[i].secondImage.imageWidth), parseInt(data[i].secondImage.imageHeight));
+	            	secondImgStyle = {"width" : imgProperties[0],
 									"height" : imgProperties[1]};
 
-					if(data[i].fourthImage.imageFile != "null"){
-						imgProperties = GetImageProperties(null, parseInt(data[i].fourthImage.imageWidth), parseInt(data[i].fourthImage.imageHeight));
-		            	fourthImgStyle = {"width" : imgProperties[0],
+					if(data[i].thirdImage.imageFile != "null"){
+						imgProperties = GetImageProperties(null, parseInt(data[i].thirdImage.imageWidth), parseInt(data[i].thirdImage.imageHeight));
+		            	thirdImgStyle = {"width" : imgProperties[0],
 										"height" : imgProperties[1]};
+
+						if(data[i].fourthImage.imageFile != "null"){
+							imgProperties = GetImageProperties(null, parseInt(data[i].fourthImage.imageWidth), parseInt(data[i].fourthImage.imageHeight));
+			            	fourthImgStyle = {"width" : imgProperties[0],
+											"height" : imgProperties[1]};
+						}
 					}
 				}
-			}
 
-			mealType = "";
-			if(data[i].breakfast == 1){ mealType += "Breakfast ";}
-			if(data[i].lunch == 1){ mealType += "Lunch ";}
-			if(data[i].dinner == 1){ mealType += "Dinner ";}
-			if(data[i].snacks == 1){ mealType += "Snacks";}
-			foodType = GetFoodType(parseInt(data[i].category));
-		    items.push({name: data[i].name, hebrew_name: data[i].hebrewName, arabic_name: data[i].arabicName ,meal_type: mealType,
-						energy: data[i].energy, protein:data[i].protein,  fatness: data[i].fatness,
-						carbohydrates: data[i].carbohydrates, calcium:data[i].calcium, na:data[i].na,
-						potassium:data[i].potassium,  alcohol :data[i].alcohol,  water :data[i].moisture,
-						food_type: foodType, menu_image: data[i].menuImage.file, menu_img_style: menuImgStyle,
-						weight : data[i].firstImage.imageWeight, img_file : data[i].firstImage.imageFile, first_img_style: firstImgStyle, height: data[i].firstImage.imageHeight, width: data[i].firstImage.imageWidth,
-						weight2 : data[i].secondImage.imageWeight, img_file2 : data[i].secondImage.imageFile, second_img_style: secondImgStyle, height2: data[i].secondImage.imageHeight, width2: data[i].secondImage.imageWidth,
-						weight3 : data[i].thirdImage.imageWeight, img_file3 : data[i].thirdImage.imageFile, third_img_style: thirdImgStyle, height3: data[i].thirdImage.imageHeight, width3: data[i].thirdImage.imageWidth,
-						weight4 : data[i].fourthImage.imageWeight, img_file4 : data[i].fourthImage.imageFile, fourth_img_style: fourthImgStyle, height4: data[i].fourthImage.imageHeight, width4: data[i].fourthImage.imageWidth,
-						expand : false});
+				mealType = "";
+				if(data[i].breakfast == 1){ mealType += "Breakfast ";}
+				if(data[i].lunch == 1){ mealType += "Lunch ";}
+				if(data[i].dinner == 1){ mealType += "Dinner ";}
+				if(data[i].snacks == 1){ mealType += "Snacks";}
+				foodType = GetFoodType(parseInt(data[i].category));
+			    items.push({id:data[i].id, name: data[i].name, hebrew_name: data[i].hebrewName, arabic_name: data[i].arabicName ,meal_type: mealType,
+							energy: data[i].energy, protein:data[i].protein,  fatness: data[i].fatness,
+							carbohydrates: data[i].carbohydrates, calcium:data[i].calcium, na:data[i].na,
+							potassium:data[i].potassium,  alcohol :data[i].alcohol,  moisture :data[i].moisture,
+							food_type: foodType, menu_image: data[i].menuImage.file, menu_img_style: menuImgStyle,
+							weight : data[i].firstImage.imageWeight, img_file : data[i].firstImage.imageFile, first_img_style: firstImgStyle, height: data[i].firstImage.imageHeight, width: data[i].firstImage.imageWidth,
+							weight2 : data[i].secondImage.imageWeight, img_file2 : data[i].secondImage.imageFile, second_img_style: secondImgStyle, height2: data[i].secondImage.imageHeight, width2: data[i].secondImage.imageWidth,
+							weight3 : data[i].thirdImage.imageWeight, img_file3 : data[i].thirdImage.imageFile, third_img_style: thirdImgStyle, height3: data[i].thirdImage.imageHeight, width3: data[i].thirdImage.imageWidth,
+							weight4 : data[i].fourthImage.imageWeight, img_file4 : data[i].fourthImage.imageFile, fourth_img_style: fourthImgStyle, height4: data[i].fourthImage.imageHeight, width4: data[i].fourthImage.imageWidth,
+							expand : false});
+			}
+			for(i = 0; i < items.length; i++){
+				imgWidth = items[i].menu_img_style.width;
+				imgHeight = items[i].menu_img_style.height;
+				if (imgWidth > 90){
+					ratio = imgWidth / imgHeight;
+					items[i].menu_img_style.width = 90;
+					items[i].menu_img_style.height = 90 / ratio;
+				}
+				else if(imgHeight > 90){
+					ratio = imgHeight / imgWidth;
+					items[i].menu_img_style.height = 90;
+					items[i].menu_img_style.width = 90 / ratio;
+				}
+			}
+			$scope.items = items;
+			dataSharingService.AssignFoodItemsList($scope.items);
+
+
+			}).error(function(data) {
+				alert("error");
+			});
 		}
-		for(i = 0; i < items.length; i++){
-			imgWidth = items[i].menu_img_style.width;
-			imgHeight = items[i].menu_img_style.height;
-			if (imgWidth > 90){
-				ratio = imgWidth / imgHeight;
-				items[i].menu_img_style.width = 90;
-				items[i].menu_img_style.height = 90 / ratio;
-			}
-			else if(imgHeight > 90){
-				ratio = imgHeight / imgWidth;
-				items[i].menu_img_style.height = 90;
-				items[i].menu_img_style.width = 90 / ratio;
-			}
-		}
-		$scope.items = items;
-		dataSharingService.AssignFoodItemsList($scope.items);
 
+  $scope.showYesNo = function(item) {
 
-		}).error(function(data) {
-			alert("error");
-		});
+  	$scope.itemToDelete = item;
+
+    ModalService.showModal({
+      templateUrl: "yesno.html",
+      controller: "YesNoController",
+      preClose: (modal) => { modal.element.modal('hide'); }
+    }).then(function(modal) {
+      modal.element.modal();
+      modal.close.then(function(result) {
+      		if(result){
+      			$scope.DeleteItem($scope.itemToDelete);
+      		}
+      });
+    });
+    	
+
+};
 				
 	$scope.openNewTr = function(item){
 		item.expand = !item.expand;
 	}
 	
 	$scope.UpdateItem = function(item){
-		alert("in update");
 		dataSharingService.SetFoodItemToUpdateIndex($scope.items.indexOf(item));
 		dataSharingService.SetToUpdate(true);
-		alert("in update 2");
 		$location.path("/addItem" );
+	}
+
+	$scope.DeleteItem = function(item){
+		var request = $http({
+		    method: "post",
+		    url: "http://127.0.0.1:3000/deleteFoodItem",
+		    data: JSON.stringify({
+		    	itemId: item.id
+			    }),
+			    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			});
+		request.success(function (data) {
+			var index = $scope.items.indexOf(item);
+			$scope.items.splice(index, 1);
+			dataSharingService.DeleteFoodItem(index);
+			alert("akul tuv");
+		}).error(function(data){
+			alert("cannot delete the item");
+		});
+		
+
 	}
 
 	GetImageProperties = function(image, imgWidth, imgHeight){ 
@@ -250,7 +318,7 @@ mainApp.directive("fileread", [function () {
 				}
 			}]);
 
-mainApp.controller('AddItemController', function($scope, $window, $http, dataSharingService) {
+mainApp.controller('AddItemController', function($scope, $window, $http, $location, dataSharingService) {
 	$scope.foodTypes = ['Hot Drinks', 'Cold Drinks', 'Cheese', 'Sausages', 'Sauces', 'Fruits', 'Vegetables', 'Cooked Vegetables', 'Meat', 'Fish', 'Pasta & Pizza', 'Sweets', 'Cereals', 'Eggs', 'Bread', 'Pastries', 'Soups', 'Alcohol', 'Spreads'];
 	$scope.mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 	$scope.mealTypesBinary = [0, 0, 0, 0];
@@ -271,60 +339,74 @@ mainApp.controller('AddItemController', function($scope, $window, $http, dataSha
 	$scope.canProceed = true;
 	
 	$scope.dropdownButtonText = "Food Type";
-	$scope.firstImageStyle = $scope.secondImageStyle = $scope.thirdImageStyle = $scope.fourthImageStyle = {"width" : "110px",
-								"height" : "110px"};
+	$scope.menuImageFileStyle = $scope.firstImageStyle = $scope.secondImageStyle = $scope.thirdImageStyle = $scope.fourthImageStyle = {"width" : "90px",
+								"height" : "90px"};
 	$scope.addUpdateButton = "Add Item";
 
 	if(dataSharingService.IfToUpdate()){
 		$scope.itemToUpdate =  dataSharingService.GetFoodItemToUpdate();
 		$scope.addUpdateButtonText = " Update";
 		$scope.addUpdateButtonClass = "glyphicon glyphicon-edit";
+
 		$scope.foodName  = $scope.itemToUpdate.name;
 		$scope.foodHebrewName  = $scope.itemToUpdate.hebrew_name;
 		$scope.foodArabicName  = $scope.itemToUpdate.arabic_name;
 		$scope.dropdownButtonText  = $scope.itemToUpdate.food_type;
+		$scope.foodType = $scope.foodTypes.indexOf($scope.itemToUpdate.food_type);
+/*		for(i = 0; i< $scope.itemToUpdate.meal_type.size; i++){
+			if($scope.itemToUpdate.meal_type.indexOf($scope.mealTypes[i]) > -1) $scope.mealTypesBinary[i] = 1;
+		}*/
+		if($scope.itemToUpdate.meal_type.indexOf("Breakfast") > -1){
+			$scope.mealTypesBinary[0] = 1;
+			$scope.brekfastCheckbox = true;
+		}
+		if($scope.itemToUpdate.meal_type.indexOf("Lunch") > -1){
+			$scope.mealTypesBinary[1] = 1;
+			$scope.lunchCheckbox = true;
+		}
+		if($scope.itemToUpdate.meal_type.indexOf("Dinner") > -1){
+			$scope.mealTypesBinary[2] = 1;
+			$scope.dinnerCheckbox = true;
+		}
+		if($scope.itemToUpdate.meal_type.indexOf("Snacks") > -1){
+			$scope.mealTypesBinary[3] = 1;
+			$scope.snacksCheckbox = true;
+		}
 		$scope.calciumModel  = $scope.itemToUpdate.calcium;
 		$scope.potassiumModel  = $scope.itemToUpdate.potassium;
-		$scope.moisture  = $scope.itemToUpdate.moisture;
+		$scope.moistureModel  = $scope.itemToUpdate.moisture;
 		$scope.proteinModel  = $scope.itemToUpdate.protein;
 		$scope.carbohydratesModel  = $scope.itemToUpdate.carbohydrates;
 		$scope.naModel  = $scope.itemToUpdate.na;
 		$scope.alcoholModel  = $scope.itemToUpdate.alcohol;
 		$scope.energyModel  = $scope.itemToUpdate.energy;
 		$scope.fatnessModel  = $scope.itemToUpdate.fatness;
+		$scope.menuImageFile  = $scope.itemToUpdate.menu_image;
+		$scope.menuImageFileStyle = $scope.itemToUpdate.menu_img_style;
 		$scope.firstImageFile = $scope.itemToUpdate.img_file;
 		$scope.firstImageWeightModel = $scope.itemToUpdate.weight;
 		$scope.firstImageWidthModel = $scope.itemToUpdate.width;
 		$scope.firstImageHeightModel = $scope.itemToUpdate.height;
-		var imgProperties = GetImageProperties(parseInt($scope.firstImageWidthModel), parseInt($scope.firstImageHeightModel));
-		$scope.firstImageStyle = {"width" : imgProperties[0],
-								"height" : imgProperties[1]};
+		$scope.firstImageStyle = $scope.itemToUpdate.first_img_style;
 		if($scope.itemToUpdate.img_file2 != "null"){
 			$scope.secondImageFile = $scope.itemToUpdate.img_file2;
 			$scope.secondImageWeightModel = $scope.itemToUpdate.weight2;
 			$scope.secondImageWidthModel = $scope.itemToUpdate.width2;
 			$scope.secondImageHeightModel = $scope.itemToUpdate.height2;
-			imgProperties = GetImageProperties(parseInt($scope.secondImageWidthModel), parseInt($scope.secondImageHeightModel));
-			$scope.secondImageStyle = {"width" : imgProperties[0],
-									"height" : imgProperties[1]};
-
+			$scope.secondImageStyle = $scope.itemToUpdate.second_img_style;
 			if($scope.itemToUpdate.img_file3 != "null"){
 				$scope.thirdImageFile = $scope.itemToUpdate.img_file3;
 				$scope.thirdImageWeightModel = $scope.itemToUpdate.weight3;
 				$scope.thirdImageWidthModel = $scope.itemToUpdate.width3;
 				$scope.thirdImageHeightModel = $scope.itemToUpdate.height3;
-				imgProperties = GetImageProperties(parseInt($scope.thirdImageWidthModel), parseInt($scope.thirdImageHeightModel));
-				$scope.thirdImageStyle = {"width" : imgProperties[0],
-										"height" : imgProperties[1]};
+				$scope.thirdImageStyle = $scope.itemToUpdate.third_img_style;
 
 				if($scope.itemToUpdate.img_file4 != "null"){
 							$scope.fourthImageFile = $scope.itemToUpdate.img_file4;
 							$scope.fourthImageWeightModel = $scope.itemToUpdate.weight4;
 							$scope.fourthImageWidthModel = $scope.itemToUpdate.width4;
 							$scope.fourthImageHeightModel = $scope.itemToUpdate.height4;
-							imgProperties = GetImageProperties(parseInt($scope.fourthImageWidthModel), parseInt($scope.fourthImageHeightModel));
-							$scope.fourthImageStyle = {"width" : imgProperties[0],
-													"height" : imgProperties[1]};
+							$scope.fourthImageStyle = $scope.itemToUpdate.fourth_img_style;
 						}
 
 			}
@@ -345,27 +427,6 @@ mainApp.controller('AddItemController', function($scope, $window, $http, dataSha
 		$scope.addUpdateButtonClass = "glyphicon glyphicon-plus";
 	}
 	//alert($scope.item.name);
-
-	GetImageProperties = function(image, imgWidth, imgHeight){ //TODO: create factory
-		if(image != null){
-			var img = new Image();
-			img.src = image;			
-			img.onload = function () {}
-			var imgHeight = img.height;
-	        var imgWidth = img.width;
-    	}
-        if(imgHeight > imgWidth){
-        	ratio = imgHeight/imgWidth;
-        	imgWidth = 110  / ratio;
-        	imgHeight = 110;
-        }
-        else{
-        	ratio = imgWidth/imgHeight;
-        	imgHeight = 110  / ratio;
-        	imgWidth = 110;
-        }
-        return [imgWidth, imgHeight];
-	}
 
 
 	$scope.onClickCheckbox = function(type){
@@ -451,6 +512,7 @@ mainApp.controller('AddItemController', function($scope, $window, $http, dataSha
 			$scope.canProceed = false;
 		}
 		else{
+			alert($scope.brekfastCheckbox);
 			$scope.mealTypeChosen = true;
 		}
 		
@@ -605,8 +667,6 @@ mainApp.controller('AddItemController', function($scope, $window, $http, dataSha
 				$scope.thirdImageWidthFilled = $scope.CheckImageProperty($scope.thirdImageWidthModel)
 				$scope.thirdImageHeightFilled = $scope.CheckImageProperty($scope.thirdImageHeightModel)
 
-				alert($scope.thirdImageWidthFilled);
-
 				$scope.thirdImage = {	imageFile: $scope.thirdImageFile,
 								        imageHeight: $scope.thirdImageHeightModel,
 								        imageWidth: $scope.thirdImageWidthModel,
@@ -643,17 +703,23 @@ mainApp.controller('AddItemController', function($scope, $window, $http, dataSha
 			 $scope.fourthImage = "null";
 		}
 
-		alert($scope.firstImageFile)
-
 		if($scope.canProceed == false || $scope.additionalImagesCanProceed == false){
 			return;
 		}
 
-
+		if (dataSharingService.IfToUpdate()) {
+			requestUrl = "http://127.0.0.1:3000/updateFoodItem";
+			$scope.foodItemId = $scope.itemToUpdate.id;
+		}
+		else{
+			requestUrl = "http://127.0.0.1:3000/addFoodItem";
+			$scope.foodItemId = "0";
+		}
 		var request = $http({
 		    method: "post",
-		    url: "http://127.0.0.1/addFoodItem",
+		    url: requestUrl,
 		    data: JSON.stringify({
+		    	itemId: $scope.foodItemId,
 		        name: $scope.foodName,
 				hebrewName: $scope.foodHebrewName,	
 				arabicName: $scope.foodArabicName,	        
@@ -673,15 +739,76 @@ mainApp.controller('AddItemController', function($scope, $window, $http, dataSha
 		    	secondImage: $scope.secondImage,
 		    	thirdImage: $scope.thirdImage,
 		    	fourthImage: $scope.fourthImage,
-		    }),
-		    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-		});
-
-		 /*Check whether the HTTP Request is successful or not. 
-		/*request.success(function (data) {
-		    alert("not error");
+			    }),
+			    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			});
+		 /*Check whether the HTTP Request is successful or not. */
+		request.success(function (data) {
+			var item = {};
+			item.name = $scope.foodName;
+			item.hebrew_name = $scope.foodHebrewName;
+			item.arabic_name = $scope.foodArabicName;
+			item.food_type = $scope.dropdownButtonText;
+			item.meal_type = "";
+			for(i = 0; i< $scope.mealTypes.length; i++){
+				alert("in for loop");
+				if($scope.mealTypesBinary[i] == 1){
+					alert("meal type " + i + " equals 1");
+					item.meal_type += $scope.mealTypes[i] + " ";
+				}
+			}
+			alert(item.meal_type);
+			item.calcium = $scope.calciumModel;
+			item.potassium = $scope.potassiumModel;
+			item.moisture = $scope.moistureModel;
+			item.protein = $scope.proteinModel;
+			item.carbohydrates = $scope.carbohydratesModel;
+			item.na = $scope.naModel;
+			item.alcohol = $scope.alcoholModel;
+			item.energy = $scope.energyModel;
+			item.fatness = $scope.fatnessModel;
+			item.menu_image = $scope.menuImageFile;
+			item.menu_img_style = $scope.menuImageFileStyle;
+			item.img_file = $scope.firstImageFile;
+			item.weight = $scope.firstImageWeightModel;
+			item.width = $scope.firstImageWidthModel;
+			item.height = $scope.firstImageHeightModel;
+			item.first_img_style = $scope.firstImageStyle;
+			item.img_file2 = $scope.secondImageFile;
+			item.weight2 = $scope.secondImageWeightModel;
+			item.width2 = $scope.secondImageWidthModel;
+			item.height2 = $scope.secondImageHeightModel;
+			item.second_img_style = $scope.secondImageStyle;
+			if ($scope.secondImageFile  == "" || $scope.secondImageFile  == undefined){
+				item.weight2 = item.width2 = item.height2 = -1;
+			}
+			item.img_file3 = $scope.thirdImageFile;
+			item.weight3 = $scope.thirdImageWeightModel;
+			item.width3 = $scope.thirdImageWidthModel;
+			item.height3 = $scope.thirdImageHeightModel;
+			item.third_img_style = $scope.thirdImageStyle;
+			if ($scope.thirdImageFile  == "" || $scope.thirdImageFile  == undefined){
+				item.weight3 = item.width3 = item.height3 = -1;
+			}
+			item.img_file4 = $scope.fourthImageFile;
+			item.weight4 = $scope.fourthImageWeightModel;
+			item.width4 = $scope.fourthImageWidthModel;
+			item.height4 = $scope.fourthImageHeightModel;
+			item.fourth_img_style = $scope.fourthImageStyle;
+			if ($scope.thirdImageFile  == "" || $scope.thirdImageFile  == undefined){
+				item.weight4 = item.width4 = item.height4 = -1;
+			}
+			if(dataSharingService.IfToUpdate()){
+				dataSharingService.UpdateFoodItem(item);
+				$location.path("/showAllFoodItems");
+			}
+			else{
+				dataSharingService.AddFoodItem(item);
+			}
+			alert("not error");
+			
 		}).error(function (data) {
 			alert("error");
-		});*/
+		});
 	}
 });
