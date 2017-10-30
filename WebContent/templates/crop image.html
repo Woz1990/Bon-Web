@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../css/crop image.css">
+		<link rel="icon" href="../img/img_resizer.png" type="image/x-icon"/>
+		<!-- <!-- ******************************* Scripts ************************************* -->
+	  	<!-- JQuery -->
+	  	<script src="../js/jquery-1.12.4.min.js"></script>
+	  	<!-- Bootstrap javascript -->
+		<script src="../js/bootstrap.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/imgareaselect-default.css" />
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.imgareaselect.pack.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<title>Crop Image</title>
+	</head>
+	<body>
+	<div class="container-fluid">
+			<div class="row" >
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-11">
+					<div id="imageFileToCropDiv" style="font-size:120%;">
+						Select image to crop: <input type="file" id="imageFileToCrop" name="file"/>
+					</div>
+					<div>
+						<img id="imageToCrop" width="430" height="430" style="border:0px solid #000000; margin-top:50px;" src="../img/background1.jpg" >
+						</img>
+					</div>
+					<div class="container-fluid">
+						<div class="row" >
+							<div class="col-lg-8 col-md-6 col-sm-6 col-xs-11">
+								<p id="plateSize" style="font-size:150%">
+								Plate width is undefined height is undefined
+								</p>
+								<p id="foodItemSize" style="font-size:150%">
+								Food width is undefined height is undefined
+								</p>
+							</div>
+							<div class="col-lg-3 col-md-6 col-sm-6 col-xs-11">
+								<button id="setPlateSizeButton">Set Size</button>
+								<br>
+								<br>
+								<button id="setFoodItemSizeButton">Set Size</button>
+							</div>
+						</div>		
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-11">
+					<div id="foodImageFileDiv" style="font-size:120%;">
+						Select transparent image: <input type="file" id="transparentImageFile" name="file" accept="image/*" disabled/>
+					</div>
+					<div id="plateFoodDiv">
+						<img src="../img/plate_cropped.png" id="ourPlate" style="width:500px;height:500px">
+						<div id="foodImgDiv">
+							<img id="foodForPlate">
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row" id="handlingImageMenu">
+							<div class="col-lg-5 col-md-6 col-sm-6 col-xs-11" style="font-size:110%;">
+								Move Food On The Plate
+								<div><button class="glyphicon glyphicon-arrow-up" id="upButton"></button></div>
+								<div id="leftRightButtonsSection">
+									<button class="glyphicon glyphicon-arrow-left" id="leftButton"></button>
+									<button class="glyphicon glyphicon-arrow-right" id="rightButton"></button>
+								</div>
+								<div><button class="glyphicon glyphicon-arrow-down" id="downButton"></button></div>
+							</div>
+							<div class="col-lg-3 col-md-6 col-sm-6 col-xs-11" style="font-size:110%;">
+							Choose Image
+								<select id="selectImageMenu">
+									<option selected="selected">First Image</option>
+									<option>Second Image</option>
+									<option>Third Image</option>
+									<option>Fourth Image</option>
+								</select>
+							</div>
+							<div class="col-lg-3 col-md-6 col-sm-6 col-xs-11">
+								<button id="setButton">Set</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		$(document).ready(function () {
+			var plateRatioSet = false;
+			var foodItemRatioSet = false;
+			var plateWidth = 0;
+			var plateHeight = 0;
+			var foodWidth = 0;
+			var foodHeight = 0;
+			var imgWidth = 0;
+			var imgHeight = 0;
+			var plateAverage = 0;
+			var foodPlate = 500;
+			
+			$( "#selectImageMenu" ).prop( "disabled", true );
+			$( "#setButton" ).prop( "disabled", true );
+			$( "#upButton" ).prop( "disabled", true );
+			$( "#leftButton" ).prop( "disabled", true );
+			$( "#rightButton" ).prop( "disabled", true );
+			$( "#downButton" ).prop( "disabled", true );
+			
+			function readImgToCropURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						$('#imageToCrop').attr('src', e.target.result);
+						var tmpImg = new Image();
+						tmpImg.src = e.target.result;
+						if (tmpImg.width > tmpImg.height){
+							$('#imageToCrop').attr("height", 500 * tmpImg.height / tmpImg.width)
+							$('#imageToCrop').attr("width", 500)
+						}
+						else{
+							$('#imageToCrop').attr("width", 500 * tmpImg.width / tmpImg.height)
+							$('#imageToCrop').attr("height", 500)
+						}
+
+						
+					}
+					reader.readAsDataURL(input.files[0]);
+					
+					plateRatioSet = false;
+					foodItemRatioSet = false;
+					plateWidth = 0;
+					plateHeight = 0;
+					foodWidth = 0;
+					foodHeight = 0;
+					imgWidth = 0;
+					imgHeight = 0;
+					$("#plateSize").text("Plate width is undefined height is undefined");
+					$("#foodItemSize").text("Food width is undefined height is undefined");
+					
+					$( "#transparentImageFile" ).prop( "disabled", true );
+					
+					$('#imageToCrop').imgAreaSelect({
+						handles: true,
+						onSelectEnd: function (img, selection) {
+							imgWidth = selection.width;
+							imgHeight = selection.height;
+						}
+					});
+				}
+			}
+			
+			$("#imageFileToCrop").change(function() {
+				readImgToCropURL(this);
+			});
+			
+			function readTransparentImgURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+					
+					reader.onload = function (e) {
+						$('#foodForPlate').attr('src', e.target.result);
+						$('#foodForPlate').width(foodWidth * foodPlate / plateAverage);
+						$('#foodForPlate').height(foodHeight * foodPlate / plateAverage);
+					}
+					
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+			
+			$("#transparentImageFile").change(function(){
+				readTransparentImgURL(this);
+				$( "#upButton" ).prop( "disabled", false );
+				$( "#leftButton" ).prop( "disabled", false );
+				$( "#rightButton" ).prop( "disabled", false );
+				$( "#downButton" ).prop( "disabled", false );
+			});
+			
+			$('#setPlateSizeButton').click(function() {
+				var currentSrc = $('#imageToCrop').attr('src');
+				if(currentSrc==null || currentSrc==""){
+					alert('choose picture first!');
+					return;
+				}
+				if(imgWidth == 0 || imgHeight == 0) {
+					alert('select area on the image!');
+					return;
+				}
+				plateWidth = imgWidth;
+				plateHeight = imgHeight;
+				plateAverage = (imgWidth + imgHeight) / 2;
+				
+				plateRatioSet = true;
+				
+				if(plateRatioSet == true && foodItemRatioSet == true){
+				
+					$( "#transparentImageFile" ).prop( "disabled", false );
+					$( "#selectImageMenu" ).prop( "disabled", false );
+					$( "#setButton" ).prop( "disabled", false );
+					
+				}
+				
+				$("#plateSize").text("Plate width is " + plateWidth + " height is " + plateHeight);
+			});
+			
+			$('#setFoodItemSizeButton').click(function() {
+				var currentSrc = $('#imageToCrop').attr('src');
+				if(currentSrc==null || currentSrc==""){
+					alert('choose picture first!');
+					return;
+				}
+				if(imgWidth == 0 || imgHeight == 0) {
+					alert('select area on the image!');
+					return;
+				}
+				foodWidth = imgWidth;
+				foodHeight = imgHeight;
+				
+				foodItemRatioSet = true;
+				
+				if(plateRatioSet == true && foodItemRatioSet == true){
+				
+					$( "#transparentImageFile" ).prop( "disabled", false );
+					$( "#selectImageMenu" ).prop( "disabled", false );
+					$( "#setButton" ).prop( "disabled", false );
+				}
+				
+				$("#foodItemSize").text("Food width is " + foodWidth + " height is " + foodHeight);
+			});
+			
+			$('#setButton').click(function() {
+				if (foodWidth == 0 || plateAverage == 0) {
+					return;
+				}
+
+				var foodImageRatio = foodWidth / foodHeight;
+				if(foodImageRatio >= 0){
+					var imageStyleWidth = 90;
+					var imageStyleHeight = 90 / foodImageRatio;
+				}
+				else{
+					var imageStyleHeight = 90;
+					var imageStyleWidth = 90 / foodImageRatio;
+				}
+				var selectedImage = $("#selectImageMenu option:selected" ).text();
+				if (selectedImage == "First Image"){
+					window.opener.$scope.firstImageWidthModel = foodWidth * foodPlate / plateAverage;
+					window.opener.$scope.firstImageHeightModel = foodHeight * foodPlate / plateAverage;
+					window.opener.$scope.firstImageStyle = {"width" : imageStyleWidth, "height" : imageStyleHeight};
+					window.opener.$scope.firstImageFile = $('#foodForPlate').attr('src');
+				}
+				else if(selectedImage == "Second Image"){
+					window.opener.$scope.secondImageWidthModel = foodWidth * foodPlate / plateAverage;
+					window.opener.$scope.secondImageHeightModel = foodHeight * foodPlate / plateAverage;
+					window.opener.$scope.secondImageStyle = {"width" : imageStyleWidth, "height" : imageStyleHeight};
+					window.opener.$scope.secondImageFile = $('#foodForPlate').attr('src');
+				}
+				else if(selectedImage == "Third Image"){
+					window.opener.$scope.thirdImageWidthModel = foodWidth * foodPlate / plateAverage;
+					window.opener.$scope.thirdImageHeightModel = foodHeight * foodPlate / plateAverage;
+					window.opener.$scope.thirdImageStyle = {"width" : imageStyleWidth, "height" : imageStyleHeight};
+					window.opener.$scope.thirdImageFile = $('#foodForPlate').attr('src');
+				}
+				else if(selectedImage == "Fourth Image"){
+					window.opener.$scope.fourthImageWidthModel = foodWidth * foodPlate / plateAverage;
+					window.opener.$scope.fourthImageHeightModel = foodHeight * foodPlate / plateAverage;
+					window.opener.$scope.fourthImageStyle = {"width" : imageStyleWidth, "height" : imageStyleHeight};
+					window.opener.$scope.fourthImageFile = $('#foodForPlate').attr('src');
+				}
+				window.opener.$scope.$apply();
+
+
+
+			});
+			$('#upButton').click(function() {
+				var top = parseInt($("#foodImgDiv").css("top").slice(0,-2)) - 5;
+				$("#foodImgDiv").css("top", top.toString()+"px");
+			});
+			
+			$('#leftButton').click(function() {
+				var top = parseInt($("#foodImgDiv").css("left").slice(0,-2)) - 5;
+				$("#foodImgDiv").css("left", top.toString()+"px");
+			});
+			
+			$('#rightButton').click(function() {
+				var top = parseInt($("#foodImgDiv").css("left").slice(0,-2)) + 5;
+				$("#foodImgDiv").css("left", top.toString()+"px");
+			});
+			
+			$('#downButton').click(function() {
+				var top = parseInt($("#foodImgDiv").css("top").slice(0,-2)) + 5;
+				$("#foodImgDiv").css("top", top.toString()+"px");
+			});
+			
+			
+		});
+		</script>
+	</body>
+</html>

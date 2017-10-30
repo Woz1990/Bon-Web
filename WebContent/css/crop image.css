@@ -1,0 +1,70 @@
+body {
+    background-image: url('../img/background1.jpg');
+}
+
+#imageFileToCropDiv{
+	margin-left: 16px;
+	margin-top: 16px;
+}
+
+#imageToCrop{
+	margin-left: 16px;
+	margin-top: 7px;
+}
+
+#plateFoodDiv{
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+#ourPlate{
+	margin-top: 7px;
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+#foodImgDiv{
+	position: absolute;
+	top: 70px;
+	left: 70px;
+}
+
+#handlingImageMenu{
+	margin-top: 21px;
+	margin-left: 50px;
+}
+
+#setButton{
+	position: relative;
+	top: 20px;
+	text-align: left;
+}
+
+#foodImageFileDiv{
+	margin-top: 16px;
+	margin-left: 1px;
+}
+
+#upButton{
+	position: relative;
+	left: 60px;
+}
+
+#leftRightButtonsSection{
+	position: relative;
+	left: 26px;
+}
+
+#downButton{
+	position: relative;
+	left: 60px;
+}
+
+#setPlateSizeButton{
+	margin-top: 5px;
+}
+#plateSize{
+	margin-top: 5px;
+}

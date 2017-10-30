@@ -1,0 +1,209 @@
+body {
+    background-image: url('../img/background1.jpg');
+}
+
+	#embed-nav ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		background-color: #006DCC;
+	}
+
+	#embed-nav li {
+		border-left:1px solid #bbb;
+		float:right;
+	}
+
+	#embed-nav li:first-child{
+		margin-right: 200px;
+	}
+
+	#embed-nav li:last-child {
+		border-left: none;
+	}
+
+	#embed-nav li a {
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+		font-size: 110%;
+	}
+
+	#embed-nav li a:hover:not(.active) {
+		background-color: rgb(46, 109, 230);
+		color: white;
+	}
+
+	#embed-nav li a:active {
+		background-color: rgb(46, 109, 230);
+		color: white;
+	}
+
+#foodContainer{
+	/* position: absolute; */
+	margin-top: 8%;
+	margin-left: 5%;
+}
+
+/* #searchInput{ */
+	/* font-size: 125%; */
+/* } */
+
+#titles{
+	font-size:150%;
+}
+
+#nameSection{
+	left: 10%;
+	width: 17%;
+}
+
+#imageSection{
+	left: 28%;
+	width: 12%;
+}
+
+#foodTypeSection{
+	left: 43%;
+	width: 17%;
+}
+
+#mealTypeSection{
+	left: 60%;
+	width: 21%;
+}
+
+#actionsSection{
+	left: 77%;
+	width: 17%;
+}
+
+#foodList{
+	position: absolute;
+	top: 32%;
+	left: 5%;
+	width: 90%;
+}
+
+th{
+	font-size: 150%;
+	text-align: center;
+	background-color: #006DCC;
+    color: white;
+}
+
+tr td:last-child, th:last-child{
+	border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+tr td:first-child, th:first-child{
+	border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+td{
+	/* border: 2px solid black; */
+    /* border-radius: 5px; */
+	font-size: 115%;
+	text-align: center;
+	background-color: #EEEEEE;
+}
+
+td div{
+	font-size: 125%;
+}
+
+.nameSection{
+	margin-top: 17px;
+}
+
+.foodTypeSection{
+	margin-top: 17px;
+}
+
+.mealTypeSection{
+	margin-top: 17px;
+}
+
+.actionsSection{
+	font-size: 115%;
+}
+
+.actionsSection td{
+	cursor:pointer;
+}
+
+/*.imageSection img{
+	width:75px;
+	height: 75px;
+}*/
+
+.viewButton:hover {
+    background-color: #555;
+    color: white;
+}
+
+.editButton:hover {
+    background-color: #555;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: #555;
+    color: white;
+}
+
+
+.viewButton{
+	border-left-style: solid;
+	border-right-style: solid;
+	border-right-color: #000000;
+	border-left-color: #000000;
+	position: relative;
+	width: 7%;
+	text-align: center;
+}
+
+.editButton{
+	border-right-style: solid;
+	border-right-color: #000000;
+	position: relative;
+	width: 5%;
+	text-align: center;
+}
+
+.deleteButton{
+	border-right-style: solid;
+	border-right-color: #000000;
+	position: relative;
+	width: 5%;
+	text-align: center;
+}
+
+.nutritonValuesSection{
+	width: 200px;
+}
+
+.expanded-table-nutrtitons-images th, .expanded-table-nutrtitons-images td{
+	border-style: solid;
+    border-width: medium;
+}
+
+.expanded-table-nutrtitons-images th{
+	font-size: 115%;
+	color: black;
+	background-color: #EEEEEE;
+}
+
+.expanded-table-nutrtitons-images td:last-child{
+	margin-bottom: 80px;
+}
+
+.foodImagesClass{
+	width:90px;
+	height: 90px;
+}
+

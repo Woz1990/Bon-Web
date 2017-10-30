@@ -1,0 +1,123 @@
+Id,Name,Program,Breakfast,Lunch,Dinner,Snacks,Energy,Protein,Fatness,Carbohydrates,Calcium,Na,Potassium,Alcohol,Water,Category,Weight S,Img_file S,Img_width S,Img_height S,Weight M,Img_file M,Img_width M,Img_height M,Weight L,Img_file L,Img_width L,Img_height L,Weight XL,Img_file XL,Img_width XL,Img_height XL,Menu Image,,
+1,Chicken,1,1,1,1,0,98.85,18.59,1.02,2.63,10.89,423.36,206.88,0,76.73,9,107.2,chicken_s,209,171,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,chicken_menu,עוף,دجاج
+2,Olive Oil,1,1,1,1,0,884,0,100,0,1,2,1,0,0,5,9.9,oliveoil_p6_t,105,109,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,oliveoil_m_t,שמן זית,زيت زيتون
+3,Humus,1,1,1,1,0,264.14,11.75,16.82,13.19,218.26,275.64,283.32,0,52.07,5,32.4,hummus_p_t,99,98,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,hummus_m_t,חומוס,حمص
+4,Pear,1,1,1,1,1,58,0.38,0.12,12.36,9,1,119,0,83.71,6,100.6,pear_004,114,212,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,pear_004,אגס,اجاص
+5,Green Apple,1,1,1,1,1,52,0.26,0.17,11.41,6,1,107,0,85.56,6,186.7,im013_t,160,159,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im013_t,תפוח ירוק,تفاح اخضر
+6,Red Apple,2,1,1,1,1,52,0.26,0.17,11.41,6,1,107,0,85.56,6,71.4,apple_s,148,126,212.6,apple_red,157,165,1,zzz_null_image,1,1,1,zzz_null_image,1,1,apple_red,תפוח אדום,تفاح احمر
+7,Water Melon,1,1,1,1,1,30,0.61,0.15,7.15,7,1,112,0,91.45,6,132,im001_t,172,261,204,im002_t,209,297,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im001_t,אבטיח,بطيخ
+8,Orange,2,1,1,1,1,47,0.94,0.12,9.35,40,0,181,0,86.75,6,193.5,im003_t,203,197,364,im007_t,201,202,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im003_t,תפוז,برتقال
+9,Grape,2,1,1,1,1,69,0.72,0.16,17.2,10,2,191,0,80.54,6,36,im019_t,92,127,72,im008_t,179,148,230.7,im009_t,215,345,1,zzz_null_image,1,1,im009_t,ענבים,عنب
+10,Banana,2,1,1,1,1,89,1.09,0.33,20.24,5,1,358,0,74.91,6,90.4,im004_t,110,267,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im017_t,בננה,موز
+11,Tomato,2,1,1,1,1,18,0.88,0.2,2.72,10,5,237,0,94.5,7,31.8,im027_t,79,110,57.5,im025_t,119,118,113.9,im026_t,136,145,1,zzz_null_image,1,1,im026_t,עגבניה,بندوره
+12,Peas And Carrot,1,1,1,1,0,53,3.04,0.29,6.82,22,248,175,0,85.8,8,24.1,carrotandpea_p0_t,120,118,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,carrotandpea_m_t,אפונה וגזר,بازيلاء وجزر
+13,Rice,1,0,1,1,0,130,2.69,0.28,27.77,10,1,35,0,68.44,8,33.9,rice_p_t,181,175,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,rice_m1_t,אורז,ارز
+14,Kishuim,1,0,1,1,0,20,0.9,0.31,2.88,27,283,191,0,93.02,8,25,zucchini_p2_t,121,128,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,zucchini_m2_t,קישואים,
+15,Eggplants,1,0,1,1,0,99.95,1.18,8.37,2.68,10.69,182.93,267.81,0,82.82,8,81.9,eggplant_p7_t,257,215,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,eggplant_m_t,חצילים,باذنجان
+16,Mushrooms,1,0,1,1,0,28,2.16,0.47,3.06,6,239,354,0,90.52,8,53,mashrooms_p4_t,152,148,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,mashrooms_p4_t,פטריות,فطر
+17,Cooked Carrot,1,0,1,1,0,35,0.76,0.18,5.17,30,296,234,0,89.62,8,15.8,caroot_p_t,131,225,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,caroot_m2_t,גזר מבושל,جزر مطبوخ
+18,Spaghetti,2,0,1,1,0,128.48,3.98,2.73,20.35,10.7,322.32,136.06,0,70.28,11,77.3,spaggeti_psmall_t,218,237,177.3,spaggeti_plarge_t,288,312,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,spaggeti_psmall_t,ספגטי,سباغيتي
+19,Chocolate Roglach,1,1,0,1,1,467,6.6,20.6,63.9,211.55,170.1,240.81,0,6.21,12,51.2,rugelach_p2_t,166,99,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,rugelach_p2_t,רוגעלך שוקולד,
+20,Beigal,1,1,0,1,1,291,9,3,57,12.5,584,99.59,0,30,12,4.2,bigale_p1_t,123,116,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,bigale_m_t,בייגל,
+21,Bitter Chocolate,2,1,0,1,1,541.25,8.1,33.6,51.61,39.92,8.25,1349.88,0,5.38,12,7.6,im023_t,103,42,16.8,im028_t,87,98,100,im022_t,149,305,-1,zzz_null_image,-1,-1,im023_t,שוקולד מריר,شوكولاتع مره
+22,Milk Chocolate,1,1,0,1,1,535,7.65,29.66,56,189,79,372,0,1.5,12,16.7,im024_t,89,152,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im024_t,וקולד חלב,شوكولاته بطعم الحليب
+23,Sweet Cornfleks,1,1,0,0,1,97.68,3.4,2.68,15.31,87.16,140.06,136.02,0,77.17,13,232.5,sweetcereal_p_t,360,357,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,sweetcereal_m_t,קורנפלקס ממותק,كورنفليكس محلى
+24,Cornfleks,1,1,0,0,1,97.68,3.4,2.68,15.31,87.16,140.06,136.02,0,77.17,13,230.9,cereal_p_t,265,268,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,cereal_m_t,קורנפלקס,كورنفليكس
+25,Mekushkeshet,1,1,0,1,0,246.03,12.89,20.98,0.79,54.4,282.86,137.36,0,64.34,14,43.4,im010_t,264,243,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im010_t,ביצה מקושקשת,بيضه محروره
+26,Fried Egg,1,1,0,1,0,246.03,12.89,20.98,0.79,54.4,282.86,137.36,0,64.34,14,45.5,im011_t,175,203,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,im011_t,ביצת עין,بيضة عين
+27,Shakshuka,1,1,1,1,0,99.46,4.23,7,5.06,40.41,347.04,219.5,0,81.24,14,100,shakshuka_p_t,210,193,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,shakshuka_m_t,שקשוקה,شكشوكه
+28,White Bread,1,1,1,1,1,240,8.6,1.2,49,13.73,5,170.36,0,37.9,15,29.8,bread_p_t,210,230,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,bread_p_t,לחן לבן,خبز ابيض
+29,Pita,1,1,1,1,1,275.83,8.49,0.83,54.84,13.25,232.57,123.59,0,32.38,15,57.3,pitta_p_t,264,166,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,pitta_m_t,פיתה,رغيف خبز
+30,Lahmania,1,1,1,1,1,154,9.6,0.31,28.2,20.05,390,165.32,0,57.99,15,103.7,lahmania_pm1_t,401,194,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,lahmania_pm1_t,לחמניה,دعبوبلحمنياه
+31,Crackers,1,1,0,1,1,407,9.4,14.1,60,21.33,1086,207.5,0,4.2,15,8.5,kreker_p_t,172,173,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,kreker_m_t,קרקרים,بسكويت كراكر
+32,Potato Burekas,1,1,1,1,1,309,4.5,19,30,14.7,390,181.07,0,43.91,16,250,burrekas_p_t,131,225,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,burrekas_p_t,בורקס תפוח אדמה,بوريكس بطاطا
+33,French Fries,1,0,0,0,1,547,6.56,37.47,45.34,24,525,1642,0,2.28,16,18.9,frenchfries_p_t,146,184,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,frenchfries_m_t,צ'יפס מטוגן,بطاطا مقلية
+34,Cashew Nuts,1,0,0,0,1,597,17.2,45.7,29.3,36.67,440,654.17,0,3.8,16,14.3,cashew_p_t,93,103,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,cashew_m_t,אגוזי קשיו,كاشيو
+35,Jam,1,1,0,1,1,260,0.54,0.14,65.93,20,36,77,0,32.48,19,20.3,jam_p_t,109,100,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,jam_m2_t,ריבה,مربى
+36,Honey,1,1,0,1,1,304,0.3,0,82.2,6,4,52,0,17.1,19,6.8,honey_p_t,78,81,1,zzz_null_image,1,1,1,zzz_null_image,1,1,1,zzz_null_image,1,1,honey_m1_t,דבש,عسل
+37,Seeds,2,0,0,0,1,3.6,0.16,0.31,0.12,0.28,0.12,5.22,0,0.29,16,0.5,im018_t,42,49,0.9,im015_t,51,94,1.6,im020_t,127,50,-1,zzz_null_image,-1,-1,im018_t,זרעים,حبوب
+38,Coffee,1,1,1,1,0,12.08,0.24,0.01,2.71,4.65,2.64,68.02,0,96.04,1,200,coffee_t,217,158,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,coffee_t,קפה,قهوة
+39,Tea,1,1,1,1,1,1,0,0,0.3,0,3,37,0,99.7,1,200,tea_t,204,163,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,tea_t,תה,شاي
+40,Bulgarit Cheese,1,1,0,1,0,121,15,5,4,500,600,52.77,0,75,3,43.7,bulgarit_p_t,142,151,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,bulgarit_m_t,גבינה בולגרית,جبنة بلغاريه
+41,Cheeseeggplant,2,1,1,1,0,76.96,2.3,4.07,6.6,42,255.22,222.31,0,83.75,8,50.2,cheeseeggplant_p_t,221,203,86.9,cheeseeggplant_m_t,288,189,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,cheeseeggplant_m_t,חצילים בגבינה ,باذنجان بلجبن
+42,Cheese,1,1,1,1,0,349,24,28,0.2,640.95,630,119.79,0,46.8,3,9.6,cheese_p_t,198,94,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,cheese_m_t,גבינה,جبنه
+43,Chocolate Ice Cream,1,0,0,0,1,255,4.72,16.98,19.85,142,57,238,0,56.55,12,37.8,chocolateicecream_p_t,117,121,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,chocolateicecream_p_t,גלידת שוקולד,بوظة بطعم الشوكولاته
+44,Knafe,1,1,0,1,1,221.88,5.1,4.4,41.22,36.62,128.54,94.12,0,47.49,12,96.5,knafe_p1_t,243,203,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,knafe_m_t,כנאפה,كنافة
+45,Kuskus,1,0,1,1,0,184.64,5.44,3.88,29.55,8.7,201.09,75.79,0,58.46,8,327.2,kuskus_sauce_p1_t,354,330,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,kuskus_m1_t,קוסקוס,كسكس
+46,Mango,1,1,1,1,1,65,0.51,0.27,15.2,10,2,156,0,81.71,6,250,mango_p1_t,191,161,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,mango_m,מנגו,مانغو
+47,Apricot Jam,1,1,0,1,1,260,0.54,0.14,65.93,20,36,77,0,32.48,19,22.1,mishmeshjam_p_t,80,79,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,mishmeshjam_m_t,ריבת משמש,مربى المشمش
+48,Nutella,1,1,0,1,1,585,1.2,38.1,56.7,96.14,8,362.3,0,0.3,19,17.4,nutella_p_t,76,69,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,nutella_m_t,ממרח נוטלה,نوتيلا
+49,Olive,1,1,1,1,0,145,1.03,15.32,0.54,52,1556,42,0,75.28,7,20.5,olive_p_t,73,91,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,olive_m_t,זית,زيتون
+50,Peanut Butter,1,1,0,1,1,588,25.09,50.39,13.56,43,459,649,0,1.81,19,26.8,peanutbutter_p_t,83,93,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,peanutbutter_m_t,חמאת בוטנים,زبدة الفول السوداني
+51,Pecan,1,1,1,1,1,691,9.17,71.97,4.26,70,0,410,0,3.52,6,10.2,pecan_p2_t,97,104,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pecan_m2_t,פקאן,جوز البقان
+52,Perot Yaveshim,1,1,1,1,1,244,2.19,0.44,57.41,40,17,746,0,30.41,6,76.1,perotyavesh_p1_t,154,122,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,perotyavesh_m1_t,פירות יבשים,فاكهه مجففة
+53,Petiber,1,1,0,0,1,439.6,7.7,13.4,72.22,42.55,266,98.96,0,5.16,15,7.7,petiber_p_t,130,98,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,petiber_m_t,פתי-בר,بسكوت بيتي بار
+54,Pizuhim,1,0,0,0,0,386,24.4,31.18,9.94,31.07,13,582.31,0,32.14,16,11.2,pitzuhim_p2_t,141,134,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pitzuhim_m1_t,פיצוחים,جوز
+55,Potato,1,0,1,1,0,86,1.86,0.1,18.21,5,241,377,0,76.51,8,153.9,potato_pm_t,177,125,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,potato_pm_t,תפוח אדמה,بطاطا 
+56,Ptitim,2,1,1,1,0,190.51,4.74,6.34,28.79,6.54,330.21,40.46,0,59.05,11,22.9,ptitim_p1_t,131,147,30,ptitim_p2_t,229,237,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,ptitim_m_t,פתיתים,
+57,Roasted Almond,1,0,0,0,1,246,6.85,21.65,10.14,119.72,5,335.76,0,58.29,16,13.8,roastedalmond_p_t,100,109,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,roastedalmond_m1_t,שקדים קלויים,اللوز المحمص
+58,Salad,1,1,1,1,0,47.12,0.79,3.56,2.94,15.19,215.4,184.37,0,90.72,7,45.8,salad_p_t,150,159,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,salad_m_t,סלט,سلطة
+59,Salmon,1,0,1,1,0,233.54,25.37,14,0,42.39,296.51,496.37,0,59.63,10,106.7,salmon_p1_t,220,190,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,salmon_m1_t,סלמון,سمك السالمون
+60,Smash Potato,1,0,1,1,0,120.03,1.63,4.51,17.06,10.08,385.03,309.61,0,74.11,8,68,smashpotato_p_t,146,141,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,smashpotato_m1_t,פירה תפוח אדמה,بطاطا مهروسه
+61,Strawberry Ice Cream,1,0,0,1,1,249,3.5,16.2,22.29,117,61,157,0,57.2,12,42,strawberryicecream_p1_t,122,113,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,strawberryicecream_p1_t,גלידת תות,مثلجات التوت
+62,Tamar,2,1,1,1,1,282,2.45,0.39,67.03,39,2,656,0,20.53,6,25.5,tamar_p1_t,146,97,71.6,tamar_m2_t,291,225,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,tamar_m2_t,תמר,تمر
+63,Vanilla Ice Cream,1,0,0,1,1,249,3.5,16.2,22.29,117,61,157,0,57.2,12,39.19,vanillaicecream_p_t,124,123,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,vanillaicecream_p_t,גלידת וניל,بوظة بطعم الفانيل
+64,Quark,1,1,0,1,0,79,9,3,4,100,450,98.74,0,83,3,250,creamcheese_m_t,220,221,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,creamcheese_m_t,,
+65,Coke,1,1,1,1,1,2,0.11,0.03,0.29,3,8,8,0,99.54,2,200,coke_p_t,107,168,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,coke_m_t,קולה,كولا
+66,Shoko,1,1,1,1,1,16.25,0.28,0.18,3.26,12.66,3.64,21.81,0,95.16,2,200,chocomilk_p_t,107,168,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,choco_m_t,שוקו,شوكو
+67,Orange Juice,1,1,1,1,1,46,0.7,0.2,10.5,12.34,3.5,275,0,86.9,2,200,orangejuice_p_t,107,168,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,orangejuice_m_t,מיץ תפוזים,عصير برتقال
+68,Milk,1,1,0,1,1,57,2.9,3,4.6,100,50,144.83,0,88.51,2,200,milk_p_t,110,168,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,milk_m_t,חלב,حليب
+69,Wine,1,0,1,1,1,84,0.07,0,2.72,8,5,99,10.4,86.58,18,200,wine_p3_t,120,185,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,wine_m_t,יין,نبيذ
+70,Fruity,1,1,0,1,1,103,3,1.5,19.5,217.69,42.2,100.04,0,76.2,0,125,fruity_m_t,130,190,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,fruity_m_t,פירותי,
+71,Gil,1,1,0,1,1,62.5,3.55,3,5.35,137.5,65,173.39,0,87.1,0,206,gil_m_t,130,190,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,gil_m_t,גיל,
+72,Beer,1,0,1,1,1,43,0.46,0,3.55,4,4,27,3.9,91.96,18,500,beer_m8_t,112,205,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,beer_m8_t,בירה,بيرة
+73,Avocado,1,1,0,1,0,160,2,14.66,1.83,12,7,485,0,73.23,7,51.1,avocado_p_t,204,121,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,avocado_p_t,אבוקדו,افوكادو
+74,Burger,1,1,1,1,0,270,12.4,9.4,33.6,87.09,539,206.75,0,38.8,9,51.1,burger_p_t,252,241,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,burger_m_t1,המבורגר,همبرغر
+75,Pastrama,1,1,1,1,1,98.85,18.59,1.02,2.63,10.89,500,206.88,0,76.73,4,7.6,pastrama_t,230,227,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pastrama_t,פסטרמה,بستراما
+76,Schnitzel,1,0,1,1,0,231.89,20.71,11.24,10.41,21.69,317.43,193.23,0,56.11,9,182.7,shnizel_m_t,264,284,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,shnizel_m_t,שניצל,شنيتسل
+77,Pork Steak,1,0,1,1,0,248,28,14.25,0,25,397,370,0,55.98,9,299.6,pork_steak_pl_t,223,239,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pork_steak_pl_t,סטייק חזיר,شريحة لحم الخنزير
+78,Steak,2,0,1,1,0,248,28,14.25,0,25,397,370,0,55.98,9,181.1,steak_ml_t,277,300,299.6,steak_ps_t,243,192,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,steak_ml_t,סטייק,شريحة لحم الخنزير
+79,Beacon Strip,1,0,1,1,0,248,28,14.25,0,25,397,370,0,55.98,9,15.7,strip_p_t,137,177,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,strip_m_t,בייקון,لحم خنزير مقدد
+80,Kziza,1,0,1,1,0,253.63,15.87,17.17,8.78,47.34,383.68,165.22,0,55.71,9,55.3,kziza_p_t,121,128,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,kziza_m_t,קציצה,اللحم المفروم
+81,Liver,1,0,1,1,0,204.16,16.12,13.21,4.09,18.04,404.4,281.07,0,64.92,9,47.2,liver_p_t,118,111,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,liver_m_t,כבד,كبد
+82,Salami,1,1,1,1,1,235.45,14.4,19.64,0.12,16.69,409.92,304.17,0,64.84,4,15.7,salami_p_t,183,237,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,salami_p_t,סלאמי,سلامي
+83,Carrot,2,1,1,1,0,41,0.93,0.24,6.78,33,69,320,0,88.29,7,42.9,carrot_p_t,143,110,95.1,carrot_m_t,277,95,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,carrot_m_t,גזר,جزر  
+84,Fruit Juice,1,1,1,1,1,43.5,0,0,11.4,4.74,10.4,75.76,0,87.5,2,10000,fruitshake_p_t,223,200,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,fruitshake_m_t,מיץ פירות,
+85,Gamba,1,1,1,1,0,26,0.99,0.3,4.03,7,2,211,0,92.21,7,89.9,gamba_m_t,208,151,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,gamba_m_t,גמבה,فلفل جمبه
+86,Kabanos,1,1,1,1,0,395,17,34,5,10.18,980,253.46,0,43,4,25.1,kabanos_p_t,283,32,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,kabanos_m_t,קבנוס,لحوم البقر
+87,Cabbage,1,1,1,1,0,395,17,34,5,10.18,980,253.46,0,43,7,47.8,kroov_mp_t,170,152,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,kroov_mp_t,כרוב,ملفوف
+88,Tuna,1,0,1,1,0,395,17,34,5,10.18,980,253.46,0,43,10,48.5,tuna_p_t,148,158,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,tuna_p_t,טונה,تونه
+89,Thina,1,1,1,1,1,268.02,11.52,23.01,4.11,321.67,656.48,227.85,0,58.8,5,22.2,yogurt_p_t,116,116,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,thina_m_t,טחינה,طحينه
+90,Tomato Sauce,1,0,1,1,0,93.42,1.61,4.78,10.29,20.53,501.18,314.81,0,80.39,5,43.6,tomatosauce_p_t,159,161,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,tomatosauce_m_t,רוטב עגבניות,صلصة الطماطم
+91,Beef Soup,1,0,1,1,0,72.53,5.65,3.61,4.06,12,366.84,185.87,0,85.09,17,268.8,beef_soup_4_t,340,335,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,beef_soup_4_t,מרק בקר,حساء البقر
+92,Bolognese Sauce,1,0,1,1,0,147.47,8.91,10.18,4.97,10.47,568.18,274.11,0,74.31,5,59.2,bolognese_sauce_t,290,227,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,bolognese_sauce_t,רוטב בולונז,صلصة بولونيز
+93,Chocolate Puding,1,1,0,1,1,108,2.6,1.5,21,130,100,188.4,0,73.9,0,130.1,chocolate_pudding_4_t,171,159,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,chocolate_pudding_1_t_m,פודינג שוקולד,بودنغ الشوكولاته
+94,Corn,1,1,1,1,1,107,3.3,1.27,22.16,2,242,248,0,69.17,7,341.4,corn_t,298,125,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,corn_t,תירס,ذرة
+95,Cream Sauce,1,1,1,1,1,323.28,3.14,29.29,11.55,75.7,265.21,128.7,0,54.54,5,18,cream_sauce_t,182,139,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,cream_sauce_t,רוטב שמנת,صلصة القشدة
+96,Fish Steak,1,0,1,1,0,105,11.5,2,10.5,18.5,700,86.66,0,75,10,98.1,fish_steak_t,163,197,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,fish_steak_t,סטייק דג,شريحة سمك
+97,Fruit Yogurt,1,1,0,1,0,94,5,3,11.6,252.94,90,324.01,0,78.5,0,153.4,fruit_yogurt_4_t,156,153,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,fruit_yogurt_t,יוגורט פירות,زبادي الفاكهة
+98,Nioki,1,1,1,1,0,154,2.8,0.3,35.2,40.82,360,262.38,0,59.76,11,69.2,gnocchi_nioki_1_t,202,167,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,gnocchi_nioki_1_t,ניוקי,
+99,Adashim Soup,2,0,1,1,0,82.55,5.75,0.34,8.49,14.98,813.54,159,0,78.23,8,248,green_lentil_stew_large_t,227,229,142.5,green_lentil_stew_medium_t,206,206,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,green_lentil_stew_large_t,מרק עדשי,حساء عدس
+100,Butter,1,1,1,1,1,742,0.5,82,0.3,45.47,10,45.47,0,16.2,0,9.8,butter_s,83,109,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,butter_s,חמאה,زبدة  
+101,Coffee With Milk,1,1,0,1,1,31,1.7,1.66,2.32,60,21,97,0,93.64,1,249.5,coffee_with_milk,274,215,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,coffee_with_milk,קפה עם חלב,قهوة مع الحليب
+102,Melted Cheese,1,1,1,1,1,282,13,25,1.2,275.17,1290,132.98,0,59.8,3,25.4,melted_cheese_s,79,93,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,melted_cheese_s,גבינה מותכת,جبن ذائب
+103,Fruit Juice,1,1,1,1,1,49,0.5,0.1,11.5,8.67,8,109.42,0,86.9,2,293.2,fruit_juice,277,225,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,fruit_juice,מיץ פירות,
+104,Waffle,1,1,1,1,1,509,5,23,70.5,18.43,61,60.42,0,0.5,12,16.1,waffle_s,215,86,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,waffle_s,וופל,
+105,Vegetables Soup,1,1,1,1,1,26.84,0.77,0.21,4.68,12.39,651.47,142.7,0,92.24,12,284.6,vegetables_soup_m,341,339,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,vegetables_soup_m,מרק ירקות,حساء خضار
+106,Stuffed Grape Leaves,1,1,1,1,1,101.59,2.06,3.03,15.3,16.47,216.71,173.15,0,76.95,8,72.6,stuffed_grape_leaves_s,171,142,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,stuffed_grape_leaves_s,עלי גפן ממולאים,دوالي ورق عنب محشي
+107,Strawberry,1,1,0,0,1,32,0.67,0.3,5.68,16,1,153,0,90.95,6,79.9,strawberry_s,158,181,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,strawberry_s,תות,توت
+108,Hard Boiled Egg,1,1,0,0,0,154,12.53,10.57,1.12,50,278,126,0,74.32,14,58.8,hard_boiled_egg_m,86,115,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,hard_boiled_egg_m,ביצה קשה,بيضة مسلوقة قاسية
+109,Majadra,1,1,1,1,0,167.94,4.62,5.92,21.08,17.8,243.69,179.43,0,64.18,8,67.6,majadra_s,217,186,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,majadra_s,מג'דרה,مجدرة
+110,Peach,1,1,1,1,1,33,0.53,0.07,8.42,5.76,0,182.32,0,89.49,6,89.6,peach_s,114,127,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,peach_s,אפרסק,خوخ
+111,White Wine,1,0,0,1,1,84,0.07,0,2.72,8,5,99,10.4,86.58,18,178.4,white_wine_m,155,370,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,white_wine_m,יין לבן,نبيذ ابيض
+112,Chocolate Cookie,1,1,1,1,1,503,5,27.5,58.9,66.39,330,204.98,0,4.6,12,38.4,chocolate_cookie_m,177,113,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,chocolate_cookie_m,עוגיית שוקולד,كعك الشوكولاته
+113,Cucumber Slices,2,1,1,1,0,15,0.65,0.11,3.13,16,2,147,0,95.23,7,59.2,cucumber_slices_m,185,166,112.6,cucumber_xl,287,90,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,cucumber_slices_m,פרוסות מלפפון,شرائح من الخيار
+114,Pickle,1,1,1,1,1,13,1,0.15,2,5.83,1166.67,125,0,94.65,7,13.7,pickle_s,137,128,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pickle_s,מלפפון חמוץ,مخللات
+115,Pizza,1,0,1,1,1,211.82,10.13,10.2,18.51,181.94,403.72,226.24,0,58.49,11,132.3,pizza_m,308,319,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pizza_m,פיצה,بيضة
+116,Water,1,1,1,1,1,0,0,0,0,2,3,0.18,0,99,2,200,water_t_450_google,100,168,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,water_menu_174_google,מים,ماء
+117,Mustard,2,0,1,1,0,66,3.95,3.11,4.58,80,1120,151,0,81.645,5,6.8,mustard_s,56,62,10.7,mustard_m,77,73,15.5,mustard_xl,108,86,-1,zzz_null_image,-1,-1,mustard_menu,חרדל,خردل
+118,Tabasco,2,0,1,1,0,12,1.29,0.76,0.2,12,633,128,0,95.17,5,0.9,tabasco_s,79,67,2.2,tabasco_m,88,69,4.5,tabasco_xl,112,96,-1,zzz_null_image,-1,-1,tabasco_menu,טבסקו,تباسكو
+119,Bamba,2,0,0,0,1,435,3.7,10.6,78.9,44.685,193.31,113.778,0,1.3,12,1.5,bamba_s,93,79,2.3,bamba_m,94,95,3,bamba_l,98,123,-1,zzz_null_image,-1,-1,bamba_menu,במבה,بامبا
+120,Bisley,2,0,0,0,1,492,10.3,22.5,62.075,11.868,700,83.516,0,2.019,12,2.8,bisley_s,74,56,4.1,bisley_m,89,87,5.7,bisley_l,75,104,-1,zzz_null_image,-1,-1,bisley_menu,ביסלי,بيسلي
+121,Pepper,1,0,1,1,1,26,0.99,0.3,4.03,7,2,211,0,92.21,7,76.3,pepper_s,216,329,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,pepper_s,פילפל,فلفل
+122,Soya Milk,1,1,0,1,1,43,3.3,1.9,2.8,120,50,141,0,90.98,2,200,milk_p_t,110,168,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,-1,zzz_null_image,-1,-1,milk_soya_m,חלב סויה,
