@@ -1,0 +1,101 @@
+<link rel="stylesheet" href="css/showfood.css">
+<div class="embed-nav group" id="embed-nav">
+	<ul>
+	  <li><a href="#login">Log Out</a></li>
+	  <li><a href="#showAllFoodItems">Food List</a></li>
+	  <li><a href="#addUpdateItem">Add Food Item</a></li>
+	</ul>
+</div>
+<div class="container" id="foodContainer">
+	<div id="searchInput"><input type="text" ng-model="searchName.name" placeholder="Search.."></input>
+	</div>   
+
+
+		
+  <div class="table-responsive">    
+<!-- <table class="table" id="foodList"> -->
+  <table class="table expanded-table">
+    <thead>
+     <tr>
+				<th id="nameSection">Name</th>
+				<th id="imageSection">Image</th>
+				<th id="foodTypeSection">Food Type</th>
+				<th id="mealTypeSection">Meal Type</th>
+				<th id="actionsSection">Actions</th>
+			</tr>
+    </thead>
+   <tbody data-ng-repeat="item in items | filter:searchName | limitTo:limit">
+		  <tr>
+			<td><div class="nameSection">{{item.name}}</div></td>
+			<td class="imageSection"><img ng-src={{item.menu_image}} ng-style={{item.menu_img_style}}></img></td>
+			<td><div class="foodTypeSection">{{item.food_type}}</div></td>
+			<td><div class="mealTypeSection">{{item.meal_type}}</div></td>
+			<td>
+				<div class="actionsSection">
+					<table>
+						<tr>
+							<td class="viewButton" ng-show="!item.expand" ng-click="ExpandContract(item)">Show more</td>
+							<td class="viewButton" ng-show="item.expand" ng-click="ExpandContract(item)">Show less</td>
+							<td class="editButton" ng-click="UpdateItem(item)">Edit</td>
+							<td class="deleteButton" ng-click="openQuestionWindow(item)">Delete</td>
+						</tr>
+				  </table>
+			  </div>
+		  </td>
+		  </tr>
+		  <tr  data-ng-show="item.expand">
+		  	<td colspan="5">
+				<table class="expanded-table expanded-table-nutrtitons-images">
+					<tr>
+						<th class="nutritonValuesSection">Energy</th>
+						<th class="nutritonValuesSection">Protein</th>
+						<th class="nutritonValuesSection">Fatness</th>
+						<th class="nutritonValuesSection">Carbohydrates</th>
+						<th class="nutritonValuesSection">Calcium</th>
+						<th class="nutritonValuesSection">Na</th>
+						<th class="nutritonValuesSection">Potassium</th>
+						<th class="nutritonValuesSection">Alcohol</th>
+						<th class="nutritonValuesSection">Moisture</th>
+					</tr>
+					<tr>
+						<td>{{item.energy}}</td>
+						<td>{{item.protein}}</td>
+						<td>{{item.fatness}}</td>
+						<td>{{item.carbohydrates}}</td>
+						<td>{{item.calcium}}</td>
+						<td>{{item.na}}</td>
+						<td>{{item.potassium}}</td>
+						<td>{{item.alcohol}}</td>
+						<td>{{item.moisture}}</td>
+					</tr>
+					<tr>
+						<th>Hebrew & Arabic</th>
+						<th>Weight</th>
+						<th>Image</th>
+						<th>Weight</th>
+						<th>Image 2</th>
+						<th>Weight</th>
+						<th>Image 3</th>
+						<th>Weight</th>
+						<th>Image 4</th>
+					</tr>
+					<tr class="images_tr">
+						<td>{{item.hebrew_name}} <br> {{item.arabic_name}}</td>
+						<td>{{item.weight}}</td>
+						<td><img class="foodImagesClass" ng-style={{item.first_img_style}}  id="first_img_{{item.id}}"></img></td>
+						<td>{{item.weight2}}</td>
+						<td><img class="foodImagesClass" ng-style={{item.second_img_style}} id="second_img_{{item.id}}" alt=""></img></td>
+						<td>{{item.weight3}}</td>
+						<td><img class="foodImagesClass" ng-style={{item.third_img_style}} alt="" id="third_img_{{item.id}}"></img></td>
+						<td>{{item.weight4}}</td>
+						<td><img class="foodImagesClass" ng-style={{item.fourth_img_style}} alt="" id="fourth_img_{{item.id}}"></img></td>
+					</tr>
+				</table>
+			</td>
+		  </tr>
+		  
+	  </tbody>
+  </table>
+  </div>
+</div>
+

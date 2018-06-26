@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="css/showfood.css">
+<div class="embed-nav group" id="embed-nav">
+	<ul>
+	  <li><a href="" ng-click="GetRemovedItems()">Removed Items List</a></li>
+	  <li><a href="#showAllFoodItems" ng-click="Init()">Food List</a></li>
+	  <li><a href="#addUpdateItem">Add Food Item</a></li>
+	</ul>
+
+
+</div>
+
+<div class="container" id="foodContainer">
+	<span id="reloadButton">Reload All Images. It takes a lot of time! <img src="img/reload.png" alt="W3Schools.com" width="50" height="50" ng-click="ReloadAllImages()"></img></span>
+	<div id="searchInput"><input type="text" ng-model="searchName.name" placeholder="Search.."></input>
+	</div>   
+
+
+
+		
+  <div class="table-responsive">    
+<!-- <table class="table" id="foodList"> -->
+  <table class="table expanded-table">
+    <thead>
+     <tr>
+				<th id="nameSection">Name</th>
+				<th id="imageSection">Image</th>
+				<th id="foodTypeSection">Food Type</th>
+				<th id="mealTypeSection">Meal Type</th>
+				<th id="actionsSection">Actions</th>
+			</tr>
+    </thead>
+   <tbody bindonce data-ng-repeat="item in items | filter:searchName">
+		  <tr>
+			<td><div class="nameSection" bo-bind="item.name"></div></td>
+			<td class="imageSection"><img bo-src="item.menu_image" bo-style="item.menu_img_style"></img></td>
+			<td><div class="foodTypeSection" bo-bind="item.food_type"></div></td>
+			<td><div class="mealTypeSection" bo-bind="item.meal_type"></div></td>
+			<td>
+				<div class="actionsSection">
+					<table>
+						<tr>
+							<td class="viewButton" ng-show="!item.expand && regularItems" ng-click="ExpandContract(item)">Show more</td>
+							<td class="viewButton" ng-show="item.expand && regularItems" ng-click="ExpandContract(item)">Show less</td>
+							<td class="editButton" ng-show="regularItems" ng-click="UpdateItem(item)">Edit</td>
+							<td class="deleteButton" ng-show="regularItems" ng-click="deleteOpenQuestionWindow(item)">Delete</td>
+							<td class="undeleteButton"  ng-show="!regularItems" ng-click="undeleteOpenQuestionWindow(item)">Undelete</td>
+						</tr>
+				  </table>
+			  </div>
+		  </td>
+		  </tr>
+		  <tr  data-ng-show="item.expand">
+		  	<td colspan="5">
+				<table class="expanded-table expanded-table-nutrtitons-images">
+					<tr>
+						<th class="nutritonValuesSection">Energy</th>
+						<th class="nutritonValuesSection">Protein</th>
+						<th class="nutritonValuesSection">Fatness</th>
+						<th class="nutritonValuesSection">Carbohydrates</th>
+						<th class="nutritonValuesSection">Calcium</th>
+						<th class="nutritonValuesSection">Na</th>
+						<th class="nutritonValuesSection">Potassium</th>
+						<th class="nutritonValuesSection">Alcohol</th>
+						<th class="nutritonValuesSection">Moisture</th>
+					</tr>
+					<tr>
+						<td bo-bind="item.energy"></td>
+						<td bo-bind="item.protein"></td>
+						<td bo-bind="item.fatness"></td>
+						<td bo-bind="item.carbohydrates"></td>
+						<td bo-bind="item.calcium"></td>
+						<td bo-bind="item.na"></td>
+						<td bo-bind="item.potassium"></td>
+						<td bo-bind="item.alcohol"></td>
+						<td bo-bind="item.moisture"></td>
+					</tr>
+					<tr>
+						<th>Hebrew & Arabic</th>
+						<th>Weight</th>
+						<th>Image</th>
+						<th>Weight</th>
+						<th>Image 2</th>
+						<th>Weight</th>
+						<th>Image 3</th>
+						<th>Weight</th>
+						<th>Image 4</th>
+					</tr>
+					<tr class="images_tr">
+						<td>{{item.hebrew_name}} <br> {{item.arabic_name}}</td>
+						<td bo-bind="item.weight"></td>
+						<td><img class="foodImagesClass" bo-style={{item.first_img_style}}  id="first_img_{{item.id}}"></img></td>
+						<td bo-bind="item.weight2"></td>
+						<td><img class="foodImagesClass" bo-style={{item.second_img_style}} id="second_img_{{item.id}}" alt=""></img></td>
+						<td bo-bind="item.weight3"></td>
+						<td><img class="foodImagesClass" bo-style={{item.third_img_style}} alt="" id="third_img_{{item.id}}"></img></td>
+						<td bo-bind="item.weight4"></td>
+						<td><img class="foodImagesClass" bo-style={{item.fourth_img_style}} alt="" id="fourth_img_{{item.id}}"></img></td>
+					</tr>
+				</table>
+			</td>
+		  </tr>
+		  
+	  </tbody>
+  </table>
+  </div>
+</div>
+

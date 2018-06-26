@@ -1,0 +1,549 @@
+body {
+    background-image: url('../img/background1.jpg');
+}
+
+html {
+    overflow-x: hidden;
+} 
+
+.image_properties_input .form-control{
+	width: 90px;
+}
+
+.input-group-addon{
+	min-width: 127px;
+}
+
+#nutritional_values_container input{
+	width: 145px;
+}
+
+
+@media screen and (min-width:992px){
+	div.add-logo{
+		margin-left: 60px;
+		margin-top: 45px;
+	}
+
+	#chooseMealType{
+		position: relative;
+    	left: 40%;
+    	font-size: 135%;
+	}
+
+
+	.fileinput-new{
+		position: relative;
+    	left: 25%;
+	}
+
+	.form-inline{
+		position: relative;
+    	left: 10%;
+	}
+
+	#names_input_section .form-group{
+		position: relative;
+    	left: 30%;
+	}
+
+	#names_input_section label{
+		position: relative;
+    	left: 20%;
+    	top: 70%;
+	}
+
+	#food_type_dropdown{
+		position: relative;
+    	left: 55%;
+    	font-size: 135%;
+	}
+
+	#choose_food_type_text{
+		position: relative;
+		right: 15%;
+	}
+
+	.checkbox-inline{
+		position: relative;
+    	left: 25%;
+    	top: 30%;
+	}
+
+	.text_titles{
+		position: relative;
+    	left: 20%;
+	}
+
+	#nutritional_values_text{
+		position: relative;
+    	left: 45%;
+    	top: 40%;
+	}
+
+	#nutritional_values_container{
+		position: relative;
+    	left: 35%;
+    	top: 75%;
+	}
+	
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		margin-left: 32px;
+		font-size: 1.5em;
+	}
+	
+	.input-group-addon{
+		min-width: 85px;
+	}
+	
+	#nutritional_values_container .input-group-addon{
+		min-width: 127px;
+	}
+	
+	.btn-file{
+		margin-left: -10px;
+		margin-top: 10px;
+		min-width: 308px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+		/*margin-left: 10px;*/
+	}
+
+	#choose_text{
+		position: relative;
+    	left: 8%;
+	}
+
+	.scaler{
+		position: relative;
+    	left: 20%;
+	}
+
+	#names_input_section .form-control{
+		max-width: 320px;
+	}
+
+	#addUpdateButton{
+		margin-left: 40%;
+		margin-top: 10px;
+		margin-bottom: 15px;
+	}
+
+	#request_status_div{
+		margin-left: 34%;
+		margin-bottom: 10px;
+	}
+
+
+	
+}
+
+@media screen and (min-width:768px) and (max-width:991px) {
+	div.add-logo{
+		margin-left: 60px;
+		margin-top: 45px;
+	}
+	
+	.text_titles{
+		position: relative;
+    	left: 25%;
+	}
+
+
+	#names_input_section label{
+		position: relative;
+    	left: 35%;
+	}
+
+	.input-group-addon{
+		min-width: 85px;
+	}
+
+	#food_type_dropdown{
+		position: relative;
+    	left: 10%;
+    	font-size: 125%;
+	}
+
+	#chooseMealType{
+		position: relative;
+    	left: 20%;
+    	font-size: 135%;
+	}
+
+	.checkbox-inline{
+		position: relative;
+    	left: 10%;
+	}
+
+	#nutritional_values_container{
+		position: relative;
+    	left: 15%;
+    	top: 75%;
+	}
+
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		margin-left: 32px;
+		font-size: 1.5em;
+	}
+
+	.first_col_span.input-group-addon{
+		min-width: 127px;
+	}
+
+	#nutritional_values_container .input-group-addon{
+		min-width: 127px;
+	}
+
+	.scaler{
+		position: relative;
+    	left: 25%;
+	}
+	
+	.btn-file{
+		margin-left: -10px;
+		margin-top: 10px;
+		min-width: 308px;
+	}
+
+	.fileinput-new img{
+		position: relative;
+    	left: 17%;
+	}
+
+	.fileinput-new .glyphicon{
+		position: relative;
+    	left: 17%;
+	}
+
+	.fileinput-new .btn-file{
+		position: relative;
+    	left: 17%;
+	}
+
+	.menu_image .btn-file{
+		position: relative;
+    	left: 8%;
+	}
+
+	.menu_image img{
+		position: relative;
+    	left: 10%;
+	}
+
+	.menu_image .glyphicon{
+		position: relative;
+    	left: 10%;
+	}
+	
+	#addUpdateButton{
+		margin-left: 44%;
+		margin-top: 35px;
+		margin-bottom: 10px;
+	}
+}
+
+@media screen and (min-width:390px) and (max-width:767px) {
+	div.add-logo{
+		margin-left: 60px;
+		margin-top: 35px;
+	}
+
+	#names_input_section .form-group{
+		position: relative;
+    	left: 25%;
+	}
+
+	#names_input_section .form-control{
+		max-width: 320px;
+	}
+
+	#names_input_section label{
+		position: relative;
+		font-size: 120%;
+    	left: 20%;
+	}
+
+	#food_type_dropdown{
+		position: relative;
+    	left: 30%;
+    	font-size: 175%;
+	}
+
+	#chooseMealType{
+		position: relative;
+    	left: 30%;
+	}
+
+	.checkbox-inline{
+		position: relative;
+    	left: 20%;
+    	font-size: 145%;
+	}
+
+	#nutritional_values_text{
+		position: relative;
+    	left: 35%;
+	}
+
+	#choose_text{
+		position: relative;
+    	left: 5%;
+	}
+	
+	.text_titles{
+		position: relative;
+    	left: 40%;
+	}
+
+	.fileinput-new .btn-file{
+		position: relative;
+    	left: 17%;
+	}
+
+	.fileinput-new img{
+		position: relative;
+    	left: 17%;
+	}
+
+	.fileinput-new .glyphicon{
+		position: relative;
+    	left: 17%;
+	}
+
+	#nutritional_values_container{
+		position: relative;
+    	left: 25%;
+	}
+
+	/*.fileinput-new{
+		position: relative;
+    	left: 5%;
+	}*/
+
+	.scaler{
+		position: relative;
+    	left: 40%;
+	}
+
+	#addUpdateButton{
+		position: relative;
+    	right: 10%;
+	}
+
+}
+
+	/* .first_col_span.input-group-addon{ */
+		/* min-width: 120px; */
+		/* text-align:left; */
+	/* } */
+	
+	.btn-file{
+		margin-left: -10px;
+		margin-top: 10px;
+		min-width: 308px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+	}
+	
+
+/* .container-fluid{ */
+	/* margin-top: 13px; */
+/* } */
+
+
+
+.name_required_id{
+	margin-bottom:-20px;
+	height:40px;
+	font-size:70%;
+	text-bottom:true;
+	color:red
+}
+/* #input_food_name{ */
+	/* float: left; */
+    /* height: 30px; */
+    /* padding-right: 4px; */
+    /* padding-top: 2px; */
+    /* position: relative; */
+    /* text-align: right; */
+    /* vertical-align: middle; */
+    /* width: 73px; */
+/* } */
+.showAsterisk::after{
+	content:"*" ;
+	font-size:1.5em;
+	color:red;
+}
+.dontShowAsterisk::after{
+	display:none;
+}
+#food_type_dropdown{
+	margin-top: 16px;
+}
+
+/* #nutritional_values_container{ */
+	/* margin-left: -13px; */
+	/* margin-top: 22px; */
+/* } */
+
+/* .input-group-addon{ */
+	/* min-width: 91px; */
+	/* text-align:left; */
+/* } */
+
+
+.fileinput{
+	margin-top: 20px;
+}
+
+.form-inline{
+	/* margin-top: 5px; */
+	margin-bottom: 20px;
+}
+
+#choose_text{
+	font-size: 35px;
+}
+
+.text_titles{
+	font-size: 25px;
+	/* margin-left: -10px; */
+}
+
+.scaler{
+	/* margin-left: 75px; */
+	font-size:29px;
+	font-style: normal;
+	cursor:pointer
+}
+
+.scaler:hover{
+	font-style: italic;
+}
+
+.check_p{
+	font-size: 25px;
+	text-align: center;
+}
+
+.image_properties{
+	min-width: 70px;
+	text-align:left;
+}
+
+
+
+.image_properties_input{
+	/*margin-left: -11px;*/
+}
+
+#first-image{
+	position: absolute;
+	/*right: 30px;*/
+	margin-left: 700px;
+	font-size: 110%;
+}
+
+#testForm div:after {
+    position:absolute;
+    content:'*';
+    color:red;
+    right:-10px;
+    top:0;
+}
+
+
+@media screen and (max-width: 389px){
+	div.add-logo{
+		/* margin-left: 60px; */
+		margin-top: 45px;
+		margin-left: 30px;
+	}
+	
+	#input_food_properties{
+		position: static;
+		margin-top: 15px;
+		/* margin-left: 32px; */
+		font-size: 1.5em;
+	}
+
+	
+	#nutritional_values_container .input-group-addon{
+		min-width: 120px;
+		text-align:left;
+	}
+	
+	.btn-file{
+		max-width: 260px;
+	}
+	
+	.menu_image{
+		margin-top: 34px;
+	}
+	
+	#addUpdateButton{
+		margin-left: 33%;
+		margin-top: 5px;
+		margin-bottom: 10px;
+		/*margin-left: 40%;*/
+		/* margin-bottom: 15px; */
+	}
+
+	#chooseMealType{
+		position: relative;
+    	left: 10%;
+	}
+
+	.checkbox-inline{
+		position: relative;
+    	left: 15%;
+	}
+
+	#names_input_section label{
+		position: relative;
+    	left: 20%;
+	}
+
+	.scaler{
+		position: relative;
+    	left: 20%;
+	}
+
+	.text_titles{
+		position: relative;
+    	left: 25%;
+	}
+
+	.image_properties{
+		min-width: 70px;
+		text-align:left;
+		margin-right: 20px;
+	}
+
+	.image_properties_input .form-control{
+		width: 70px;
+	}
+
+	.image_properties_width{
+		position: relative;
+    	right: 10%;
+	}
+
+}
+
+.image_properties_input{
+		position: relative;
+    	left: 30%;
+	}
+
+
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<link rel="stylesheet" href="css/loginpage.css">
+	<body>
+			<span id="login_forms">
+				<div ng-if="login_mode">
+					<div ng-class="emailRequired&&!canAuthenticate ? 'showAsterisk': 'dontShowAsterisk'">
+						<input type="email" placeholder="Email" ng-model="$parent.email"></input>
+					</div>
+					<div ng-class="passwordRequired&& !canAuthenticate ? 'showAsterisk': 'dontShowAsterisk'">
+						<input type="password" placeholder="Password" ng-model="$parent.password"></input>
+					</div>
+					<a id="login" ng-click="PasswordCheck()">Log in</a>
+					<a id="forgot_password" ng-click="ReverseLoginMode()">Forgot your password?</a>
+					<!-- <a id="sign_up">Not a member? Sign up!</a> -->
+				</div>
+				<div ng-if="!login_mode">
+					<div ng-class="forgottenPasswordEmailRequired ? 'showAsterisk': 'dontShowAsterisk'">
+						<span id="enter_email_span">Please enter your email</span>
+						<input id="forgot_password_email_input" type="email" placeholder="Email" ng-model="$parent.email_forgotten_password"></input>
+					</div>
+					<a id="send_password" ng-click="SendPassword()">Send password</a>
+					<a id="back_to_login" ng-click="ReverseLoginMode()">Back</a>
+					<span id="error_message">{{error_message}}</span>
+				</div>
+
+			</span>
+	</body>
+
+</html>

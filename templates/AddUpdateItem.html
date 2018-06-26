@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="css/additem.css">
+	</head>
+
+	<body>
+	<div class="embed-nav group" id="embed-nav">
+		<ul>
+		  <li><a href="#showAllFoodItems">Food List</a></li>
+		  <li><a href="#addUpdateItem">Add Food Item</a></li>
+		</ul>
+	</div>
+	<br>
+	<div  class="add-logo">
+		<img src="img/try2.jpg" alt="AddFood" style="width:160px;height:130px">
+	</div>
+	<div class="container-fluid">
+		<div class="row" >
+			<div class="col-lg-5 col-md-6 col-sm-6 col-xs-11" id="input_food_properties">
+				<div id="names_input_section">
+					<div class="form-group">
+						<label for="usr" ng-class="foodNameRequired&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">English Name</label>
+							<input type="text" class="form-control" placeholder="Name" size="10" ng-model="foodName" required></input>
+					</div>
+					<div class="form-group">
+							<label for="usr"  ng-class="foodHebrewNameRequired&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Hebrew Name</label>
+							<input type="text" class="form-control" placeholder="Name" size="14" ng-model=	"foodHebrewName" required></input>
+					</div>
+					<div class="form-group">
+							<label for="usr" ng-class="foodArabicNameRequired&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Arabic Name</label>
+							<input type="text" class="form-control" placeholder="Name" size="16" ng-model=	"foodArabicName" required></input>
+					</div>
+				</div>
+				<br>
+				<div class="dropdown" id="food_type_dropdown" ng-class="!foodTypeChosen&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">
+					<div id="choose_food_type_text">Choose Food Type: </div>
+					<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">{{foodTypeButtonText}}
+					  	<span class="caret"></span>
+				  	</button>
+					  	<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+							<li class="dropdown" ng-repeat="type in foodTypes"><a style="cursor:pointer" ng-click="FoodTypeSelected(type)">{{type}}</a></li>
+					  	</ul>
+				</div>
+				
+				<h2 id="chooseMealType" ng-class="!mealTypeChosen&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Choose meal type:</h2>
+				<label class="checkbox-inline"><input type="checkbox" value="Breakfast" id="breakfastBox" ng-click="onClickMealType('Breakfast')" ng-model="brekfastCheckbox">Breakfast</label>
+				<label class="checkbox-inline"><input type="checkbox" value="Lunch" id="lunchBox" ng-click="onClickMealType('Lunch')" ng-model="lunchCheckbox">Lunch</label>
+				<label class="checkbox-inline"><input type="checkbox" value="Dinner" id="dinnerBox" ng-click="onClickMealType('Dinner')" ng-model="dinnerCheckbox">Dinner</label>
+				<label class="checkbox-inline"><input type="checkbox" value="Snacks" id="snacksBox" ng-click="onClickMealType('Snacks')" ng-model="snacksCheckbox">Snacks</label>
+
+				<br>
+				<br>
+				<h3 class="text_titles" id="nutritional_values_text"> Nutritional values</h3>
+				<div class="container-fluid" id="nutritional_values_container">
+					<div class="row">
+						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-11" id="input_values_first_col">
+							<div class = "input-group">
+					         	<span class = "input-group-addon first_col_span"  ng-class="!calciumFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Calcium</span>
+					         	<input type = "text" class = "form-control" ng-model="calciumModel">
+					      	</div>
+					      	<div class = "input-group">
+					         	<span class = "input-group-addon first_col_span" ng-class="!potassiumFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Potassium</span>
+					         	<input type = "text" class = "form-control" ng-model="potassiumModel">
+					      	</div>
+					      	<div class = "input-group">
+					         	<span class = "input-group-addon first_col_span" ng-class="!moistureFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Moisture</span>
+					         	<input type = "text" class = "form-control" ng-model="moistureModel">
+					      	</div>
+					      	<div class = "input-group">
+					         	<span class = "input-group-addon first_col_span" ng-class="!proteinFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Protein</span>
+					         	<input type = "text" class = "form-control" ng-model="proteinModel">
+					      	</div>
+					      	<div class = "input-group" >
+					         	<span class = "input-group-addon first_col_span" ng-class="!carbohydratesFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Carbohydrates</span>
+					         	<input type = "text" class = "form-control" ng-model="carbohydratesModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-5 col-md-5 col-sm-8 col-xs-11">
+							<div class = "input-group">
+					         	<span class = "input-group-addon" ng-class="!naFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Na</span>
+					         	<input type = "text" class = "form-control" ng-model="naModel">
+					      	</div>
+					      	<div class = "input-group">
+					         	<span class = "input-group-addon" ng-class="!alcoholFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Alcohol</span>
+					         	<input type = "text" class = "form-control" ng-model="alcoholModel">
+					      	</div>
+					      	<div class = "input-group">
+					         	<span class = "input-group-addon" ng-class="!energyFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Energy</span>
+					         	<input type = "text" class = "form-control" ng-model="energyModel">
+					      	</div>
+					      	<div class = "input-group">
+					         	<span class = "input-group-addon" ng-class="!fatnessFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Fatness</span>
+					         	<input type = "text" class = "form-control" ng-model="fatnessModel">
+					      	</div>	
+				      	</div>
+			      	</div>
+			    </div>
+
+			    
+				
+			     
+
+			</div>
+			<div class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+				<p class="text-center" id="choose_text">Choose images</p>
+
+				<div class="fileinput fileinput-new menu_image" data-provides="fileinput">
+					<span class="text_titles" ng-class="!menuImageFileFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Menu image</span>
+					<p></p>
+				    <span class="btn btn-default btn-file"><input type="file" fileread="menuImageFile"/></span>
+				    <img ng-src="{{menuImageFile}}"  ng-style="menuImageFileStyle" ng-show="menuImageFile"></img>
+					<span class="glyphicon glyphicon-remove" ng-show="menuImageFile" ng-click="menuImageFile=undefined; firModel=''"></span>
+				</div>
+
+				<div class="fileinput fileinput-new" data-provides="fileinput"  accept="image/*">
+					<span class="scaler" ng-click="OpenScaler()"> Image Scaler </span>
+					<br>
+					<br>
+					<span class="text_titles" ng-class="!firstImageFileFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">First image</span>
+					<p></p>
+				    <span class="btn btn-default btn-file"><input type="file" ng-model="firModel" fileread="firstImageFile"/></span>
+				   		<img ng-src="{{firstImageFile}}"  ng-style="firstImageStyle" ng-show="firstImageFile"></img>
+						<span class="glyphicon glyphicon-remove" ng-show="firstImageFile" ng-click="firstImageFile=undefined; firModel=''"></span>
+				</div>
+
+				<form class="form-inline" role="form">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!firstImageWeightFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Weight</span>
+					         	<input type = "text" class = "form-control" ng-model="firstImageWeightModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!firstImageWidthFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Width</span>
+					         	<input type = "text" class = "form-control" id="firstImageWidth" ng-model="firstImageWidthModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!firstImageHeightFilled&& !canProceed ? 'showAsterisk': 'dontShowAsterisk'">Height</span>
+					         	<input type = "text" class = "form-control" id="firstImageHeight" ng-model="firstImageHeightModel">
+					      	</div>
+				      	</div>
+			      	</div>
+				</form>
+
+
+				<div class="fileinput fileinput-new" data-provides="fileinput">
+					<span class="text_titles">Second image</span>
+					<p></p>
+				    <span class="btn btn-default btn-file"><input type="file" fileread="secondImageFile"/></span>
+						<img ng-src="{{secondImageFile}}" ng-style="secondImageStyle" ng-show="secondImageFile"></img>
+						<span class="glyphicon glyphicon-remove" ng-show="secondImageFile" ng-click="secondImageFile=undefined"></span>
+				    
+				    <!-- <span class="fileinput-filename"></span> -->
+				</div>
+
+				<form class="form-inline" role="form">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!secondImageWeightFilled&& secondImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Weight</span>
+					         	<input type = "text" class = "form-control" ng-model="secondImageWeightModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!secondImageWidthFilled&& secondImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Width</span>
+					         	<input type = "text" class = "form-control" id="secondImageWidth" ng-model="secondImageWidthModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!secondImageHeightFilled&& secondImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Height</span>
+					         	<input type = "text" class = "form-control" id="secondImageHeight" ng-model="secondImageHeightModel">
+					      	</div>
+				      	</div>
+
+					</form>
+					
+
+				
+
+			</div>
+				<div class="fileinput fileinput-new" data-provides="fileinput">
+					<span class="text_titles">Third image</span>
+					<p></p>
+				    <span class="btn btn-default btn-file"><input type="file" id="thirdImageFile" fileread="thirdImageFile"/	></span>
+						<img ng-src="{{thirdImageFile}}"  ng-style="thirdImageStyle" ng-show="thirdImageFile"></img>
+						<span class="glyphicon glyphicon-remove" ng-show="thirdImageFile" ng-click="thirdImageFile=undefined"></span>
+				    <!-- <span class="fileinput-filename"></span> -->
+				</div>
+
+				<form class="form-inline" role="form">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!thirdImageWeightFilled&& thirdImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Weight</span>
+					         	<input type = "text" class = "form-control" ng-model="thirdImageWeightModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!thirdImageWidthFilled&& thirdImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Width</span>
+					         	<input type = "text" class = "form-control" id="thirdImageWidth" ng-model="thirdImageWidthModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!thirdImageHeightFilled&& thirdImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Height</span>
+					         	<input type = "text" class = "form-control" id="thirdImageHeight" ng-model="thirdImageHeightModel">
+					      	</div>
+				      	</div>
+			      	</div>
+				</form>
+
+
+				<div class="fileinput fileinput-new" data-provides="fileinput">
+					<span class="text_titles">Fourth image</span>
+					<p></p>
+				    <span class="btn btn-default btn-file"><input type="file" fileread="fourthImageFile"/></span>
+				    <!-- <span class="fileinput-filename"></span> -->
+				    	<img ng-src="{{fourthImageFile}}"  ng-style="fourthImageStyle" ng-show="fourthImageFile"></img>
+						<span class="glyphicon glyphicon-remove" ng-show="fourthImageFile" ng-click="fourthImageFile=undefined"></span>
+				</div>
+
+				<form class="form-inline" role="form">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!fourthImageWeightFilled&& fourthImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Weight</span>
+					         	<input type = "text" class = "form-control" ng-model="fourthImageWeightModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input image_properties_width">
+					         	<span class = "input-group-addon image_properties " ng-class="!fourthImageWidthFilled&& fourthImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Width</span>
+					         	<input type = "text" class = "form-control" id="fourthImageWidth" ng-model="fourthImageWidthModel">
+					      	</div>
+				      	</div>
+				      	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
+							<div class = "input-group image_properties_input">
+					         	<span class = "input-group-addon image_properties" ng-class="!fourthImageHeightFilled&& fourthImageProceed ? 'showAsterisk': 'dontShowAsterisk'">Height</span>
+					         	<input type = "text" class = "form-control" id="fourthImageHeight" ng-model="fourthImageHeightModel">
+					      	</div>
+				      	</div>
+			      	</div>
+				</form>
+				
+
+			</div>
+
+		</div>
+	<h1 id="request_status_div">
+		{{request_status}}
+	</h1>
+	<button ng-click="AddUpdateItem()" id="addUpdateButton">
+		<span ng-class="addUpdateButtonClass" ng-bind="addUpdateButtonText"></span>
+	</button>
+	</body>
+
+</html>

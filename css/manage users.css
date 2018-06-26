@@ -1,0 +1,35 @@
+body {
+    background-image: url('../img/background1.jpg');
+}
+
+#usersContainer{
+	/* position: absolute; */
+	
+	margin-top: 8%;
+	width: 70%;
+}
+
+.table{
+	background-color: gray;
+}
+
+.nameSection{
+	width: 25%;
+}
+
+
+.emailSection{
+	width: 20%;
+}
+
+.passwordSection{
+	width: 20%;
+}
+
+.actionsSection{
+	width: 10%;
+}
+
+th, td{
+	text-align: center;
+}

@@ -1,5 +1,5 @@
 #Copyright Jon Berg , turtlemeat.com
-
+import webbrowser
 from PIL import Image
 import base64
 import csv
@@ -9,6 +9,7 @@ import json
 import urlparse
 import string,cgi,time
 import os
+import math
 from os import curdir, sep
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from datetime import datetime as dt
@@ -18,9 +19,58 @@ import jwt
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
-#import pri
 
-class MyHandler(BaseHTTPRequestHandler):
+server_port = 3000
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+import io
+from apiclient.http import MediaIoBaseDownload
+
+def main(): 
+    
+    try: 
+        gauth = GoogleAuth()
+        gauth.LoadCredentialsFile("credentials.json")
+        gauth.LocalWebserverAuth()
+        gauth.SaveCredentialsFile("credentials.json")
+        drive = GoogleDrive(gauth)
+        #print_all_files_from_drive(drive, gauth)
+        get_updates(drive, gauth)
+        #files_to_upload = [f.split(".png")[0] for f in os.listdir("pictures") if os.path.isfile(os.path.join("pictures", f))]
+        # files_to_upload = ["im013_t", "apple_red", "apple_s", "im001_t", "im002_t", "im003_t", "im007_t",
+        #                     "im009_t", "im008_t", "im019_t", "im017_t", "im004_t", "im026_t", "im025_t", "im027_t"]
+        # for filename in files_to_upload:
+        #     upload_image_file(drive, filename)
+        server = ServerForGoogleDrive(drive, gauth)
+    except Exception,e: 
+            print "Exception"
+            print str(e)
+            return 
+
+    
+
+class ServerForGoogleDrive:
+    def __init__(self, drive, gauth):
+        try:
+            RequestHandler.drive = drive
+            RequestHandler.gauth = gauth
+            server = HTTPServer(('127.0.0.1', server_port), RequestHandler)
+            sa = server.socket.getsockname()
+            print "Serving HTTP on", sa[0], "port", sa[1], "..."
+            print 'started httpserver...'
+            from datetime import date
+            print str(date.today())
+            webbrowser.get('firefox').open_new_tab('WebContent/index.html')
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print '^C received, shutting down server'
+            server.socket.close()
+
+
+class RequestHandler(BaseHTTPRequestHandler):
+    drive = None
+    gauth = None
+
     #HTTP Status Codes
     OK = 200
     BAD_REQUEST = 400
@@ -29,7 +79,8 @@ class MyHandler(BaseHTTPRequestHandler):
     INTERNAL_SERVER_ERROR = 500
 
     #Other Constants
-    ROW_SIZE = 38
+    ROW_SIZE = 37
+    MAX_NUMBER_OF_ITEMS_IN_UPDATE_RESPONSE = 30
 
 
     def do_OPTIONS(self):
@@ -54,8 +105,6 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
 
         print self.path
-        if self.jwt_signature_valid() == False:
-            return
         if self.path == "/check":
             print "in check"
             from urlparse import urlparse
@@ -65,20 +114,18 @@ class MyHandler(BaseHTTPRequestHandler):
             return
 
         if self.path == "/showFoodItems":
-            if self.jwt_signature_valid() == False:
-                return
             self.get_all_food_items()
             return
 
-        if self.path == "/getUsersList":
-            jwt_token = self.headers.get("Authorization").replace('Bearer ','').replace('"','')
-            decodedToken = jwt.decode(jwt_token, 'secret', algorithms=['HS256'])
-            if decodedToken["isAdmin"] != 'TRUE':
-                self.send_response_status_code(self.FORBIDDEN, "You are not an admin")
-                return
-
-            self.get_users_list()
+        if self.path == "/reloadAllImages":
+            download_img_files(self.drive, self.gauth)
+            self.get_all_food_items()
             return
+
+        if self.path == "/showRemovedFoodItems":
+            self.get_all_food_items("false")
+            return
+
 
         return
 
@@ -87,102 +134,11 @@ class MyHandler(BaseHTTPRequestHandler):
         import base64 
         print self.path
         try:
-            if self.path == "/forgot_password":
-                self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-                data = simplejson.loads(self.data_string)
-                self.resend_password(data)
-                return
-
-            if self.path == "/authentication":
-                self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-                print self.data_string
-                data = simplejson.loads(self.data_string)
-                self.authenticate(data)
-                return
-
-            if self.path == "/tablet_authentication":
-                form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
-                data = {}
-                data["email"] = form["email"].value
-                data["password"] = form["password"].value
-                print data
-                self.authenticate(data)
-                return
-
-            if self.jwt_signature_valid() == False:
-                return
-
-            if self.path == "/addUsers":
-                print self.headers
-                self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-                usersData = simplejson.loads(self.data_string)
-                print "before add_users_to_db"
-                self.add_users_to_db(usersData)
-                return
-
-            if self.path == "/RemoveUser":
-                self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-                data = simplejson.loads(self.data_string)
-                self.remove_user_from_db(data)
-                return
-
-            if self.path == "/updateFoodItemFromTablet":
-                try:
-                    form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
-                    foodItemData = {}
-                    for field in form.keys():
-                        foodItemData[field] = form[field].value
-                    foodItemData["meal_type"] = map(int, foodItemData["meal_type"].replace("[","").replace("]","").split(","))
-                    print foodItemData
-                    self.update_food_item(foodItemData)
-                    return
-                except Exception, Argument:
-                    print Argument
-                    self.send_response_status_code(self.INTERNAL_SERVER_ERROR, Argument)
-                    return
-
-            if self.path == "/addUpdateItemFromTablet":
-                try:
-                    foodItemData = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
-                    self.add_update_food_item(foodItemData)
-                    return
-                except Exception, Argument:
-                    print Argument
-                    self.send_response_status_code(self.INTERNAL_SERVER_ERROR, Argument)
-                    return
-
-            if self.path == "/check":
-                from urlparse import urlparse
-                query = urlparse(self.path).query
-                form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
-                lastUpdateDate = ""
-                for field in form.keys():
-                    print field
-                    lastUpdateDate = form[field].value
-                if lastUpdateDate == "":
-                    self.send_response_status_code(self.BAD_REQUEST, "Something is wrong")
-                    return
-                elif lastUpdateDate == "Never":
-                    self.get_all_food_items()
-                    print "before return"
-                    return
-                else:
-                    self.send_updated_food_items_to_client(lastUpdateDate)
-                        
-                print "before return 2"
-                return
-
-            if self.path == "/deleteFoodItemFromTablet":
-                form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
-                data = {}
-                data["itemId"] = form["itemId"].value
-                self.delete_food_item(data)
-                return
-
             self.data_string = self.rfile.read(int(self.headers['Content-Length']))
             data = simplejson.loads(self.data_string)
+            download_csv_database(self.drive, self.gauth)
             if self.path == "/addFoodItem":
-                #getting data from the client
+                #getting data from client
                 
                 self.add_food_item(data)
                 return
@@ -193,219 +149,23 @@ class MyHandler(BaseHTTPRequestHandler):
                 return
 
             if self.path == "/deleteFoodItem":
-                self.delete_food_item(data)
+                self.delete_undelete_food_item(data, "delete")
                 return
+
+            if self.path == "/undeleteFoodItem":
+                self.delete_undelete_food_item(data, "undelete")
+                return
+
         except Exception,e: 
-                print "Exception"
-                print str(e)
-                return      
-
-    ##########Authentication, Users, Passwords############
-
-
-    def get_users_list(self):
-        rowsList = []
-        with open("users_database.csv", "r") as users_csv:
-            reader = csv.reader(users_csv)
-            for row in reader:
-                if row[2] == "sfsd@gmail.com":
-                    continue
-                userRow = {}
-                userRow["first_name"] = row[0]
-                userRow["last_name"] = row[1]
-                userRow["email"] = row[2]
-                rowsList.append(userRow) 
-        self.send_response_status_code(self.OK, simplejson.dumps(rowsList))
-
-    def sendEmail(self, userMail, userPassword):
-        fromaddr = "maabadaappmail@gmail.com"
-        msg = MIMEMultipart()
-        msg['From'] = fromaddr
-        msg['To'] = userMail
-        msg['Subject'] = "Bon App Website Registration"
-         
-        body = "Hello! You were successfully registered to our Website. Your password is {}".format(userPassword)
-        msg.attach(MIMEText(body, 'plain'))
-         
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.ehlo()
-        server.starttls()
-        server.login(fromaddr, "1zvvnhhkktp7")
-        text = msg.as_string()
-        server.sendmail(fromaddr, userMail, text)
-        server.quit()
-
-    def jwt_signature_valid(self):
-        jwt_token = self.headers.get("Authorization").replace('Bearer ','').replace('"','')
-        try:
-            decodedToken = jwt.decode(jwt_token, 'secret', algorithms=['HS256'])
-            print "signature is valid"
-            return True
-        except InvalidSignatureError:
-            self.send_response_status_code(self.UNATHORIZED, "Jwt signature failed")
-            print "signature is not valid"
-            return False
-
-    def resend_password(self, data):
-        email = data["email"]
-        with open("users_database.csv", "r") as users_csv:
-            reader = csv.reader(users_csv)
-            for row in reader:
-                if row[2] == email:
-                   #send mail
-                   self.send_response_status_code(self.OK, "Password was sent")
-                   return
-        self.send_response_status_code(self.FORBIDDEN, "This email is not in the database")
-
-    def authenticate(self, data):
-        userEmail = data["email"]
-        userPassword = data["password"]
-        found = False
-        with open("users_database.csv", "r") as csvFile:
-            reader = csv.reader(csvFile)
-            for row in reader:
-                if row[2] == userEmail:
-                    if row[3] == userPassword:
-                        payload = {
-                            'id': "user.id",
-                            'isAdmin': row[4]
-                        }
-                        found = True
-                        break
-                    else:
-                        self.send_response_status_code(self.UNATHORIZED, "Wrong login or password")
-                        return
-
-        if found == False:
-            self.send_response_status_code(self.UNATHORIZED, "Wrong login or password")
-            return
-
-        jwt_token = jwt.encode(payload, 'secret', algorithm='HS256')
-        print simplejson.dumps(jwt_token)
-        self.send_response_status_code(self.OK, simplejson.dumps(jwt_token))
-
-    
-    def remove_user_from_db(self, data):
-        if data["email"] == "sfsd@gmail.com": 
-            self.send_response_status_code(self.FORBIDDEN)
-            return
-
-        rowsList = []
-        found = False
-        with open("users_database.csv", "r") as users_csv:
-            reader = csv.reader(users_csv)
-            for row in reader:
-                if row[2] == data["email"]:
-                    found = True
-                    continue
-                rowsList.append(row)
-        if found == False:
-            self.send_response_status_code(self.FORBIDDEN, "Account with this email doesn't exist")
-            return
-        with open("users_database.csv", "w") as users_csv:   
-            writer = csv.writer(users_csv)
-            writer.writerows(rowsList)
-        self.send_response_status_code(self.OK)
-
-    def add_users_to_db(self, usersData):
-        usersApproved = []
-        ifErrorOccured = False
-        for user in usersData['users']:
-            try:
-                if user["password"] == "":
-                    password = self.generate_password()
-                else: password = user["password"]
-                # print "try 2"
-                # self.sendEmail(user["email"], password)
-                # print "try 3"
-                self.add_user_to_csv_db(user, password)
-                usersApproved.append(user["email"])
-            
-
-            except Exception,e: 
-                print "Exception"
-                print str(e)
-                ifErrorOccured = True
-
-        if(ifErrorOccured == True):
-            code = self.BAD_REQUEST
-        else:
-            code = self.OK
-
-        self.send_response_status_code(code, simplejson.dumps(usersApproved))
-
-    def add_user_to_csv_db(self, user, password):
-        rowsList = []
-        print "before open"
-        with open("users_database.csv", "r") as users_csv:
-            reader = csv.reader(users_csv)
-            for row in reader:
-                if row[2] == user["email"]:
-                   raise Exception("Already exists") 
-                rowsList.append(row)
-        print "after open"
-        newrow = [user["first_name"], user["last_name"], user["email"], password, "false"]
-        rowsList.append(newrow)
-        with open("users_database.csv", "w") as users_csv:   
-            writer = csv.writer(users_csv)
-            writer.writerows(rowsList)  
-
-    def generate_password(self):
-        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+            print "Exception"
+            print str(e)
+            return      
 
     ##########Handling Request To Food DB############
 
-    def convert_meal_type(self, type):
-        if type == "false":
-            return 0
-        else:
-            return 1
-
-    def add_update_food_item(self, foodItemDate):
-        foodItem = {}
-        foodItemAttributes = ["itemId", "name", "hebrewName", "arabicName", "foodType", "calcium", "potassium", "moisture", "protein", "carbohydrates", "na", "alcohol", "energy", "fatness", "menuImageFile"]
-        for attribute in foodItemAttributes:
-            foodItem[attribute] = foodItemDate[attribute].value
-        foodItem["mealType"] = list(map(self.convert_meal_type, foodItemDate["mealType"].value.replace("[","").replace("]","").replace(" ","").split(","))) 
-        imagesNames = ["firstImage", "secondImage", "thirdImage", "fourthImage"]
-        for name in imagesNames:
-            foodItem[name] = {'imageFile':foodItemDate["{}File".format(name)].value, 'imageHeight':foodItemDate["{}Height".format(name)].value, 'imageWidth':foodItemDate["{}Width".format(name)].value, 'imageWeight':foodItemDate["{}Weight".format(name)].value}
-
-        print "add_update_food_item 1"
-        if foodItem["itemId"] != "-1":
-            print "add_update_food_item update"
-            self.update_food_item(foodItem)
-            return
-
-        else:
-            print "add_update_food_item add"
-            self.add_food_item(foodItem)
-            return
-
-    def send_updated_food_items_to_client(self, lastUpdateDate):
-        lastUpdateDate = dt.strptime(lastUpdateDate, "%Y-%m-%d %H:%M")
-        
-        itemsList = []
-        with open("database.csv", "r+") as csvFile:
-            reader = csv.reader(csvFile)
-            rowNumber = 0
-            for row in reader:
-                if rowNumber == 0:
-                    rowNumber += 1
-                    continue
-
-                if row[37] == "True":
-                    continue
-
-                foodItemLastUpdate = dt.strptime(row[36], "%Y-%m-%d %H:%M")
-                if foodItemLastUpdate > lastUpdateDate:
-                    itemsList.append(self.create_food_item(row))
-
-        now = dt.now()
-        itemsList.append({"currentDate":now.strftime("%Y-%m-%d %H:%M")})
-        self.send_response_status_code(self.OK, simplejson.dumps(itemsList))
-
-    def delete_food_item(self, data):
+    def delete_undelete_food_item(self, data, mode):
+        if mode == "delete": valueToSet = "True";
+        elif mode == "undelete": valueToSet = "False";
         id = data['itemId']
         found = False
 
@@ -414,7 +174,7 @@ class MyHandler(BaseHTTPRequestHandler):
             rowsList = [] 
             for row in reader:
                 if row[0] == id:
-                    row[37] = "True"
+                    row[36] = valueToSet
                     found = True
                 rowsList.append(row)
 
@@ -425,7 +185,7 @@ class MyHandler(BaseHTTPRequestHandler):
         with open("database.csv", "w") as csvFile:   
             writer = csv.writer(csvFile)
             writer.writerows(rowsList)
-
+        upload_csv_database(self.drive)
         self.send_response_status_code(self.OK)
 
     
@@ -435,6 +195,7 @@ class MyHandler(BaseHTTPRequestHandler):
         print data
         itemFound = False
         #try:
+
         with open("database.csv", "r") as csvFile:
             print "update_food_item in open"
             reader = csv.reader(csvFile)
@@ -463,13 +224,19 @@ class MyHandler(BaseHTTPRequestHandler):
         with open("database.csv", "w") as csvFile:   
             writer = csv.writer(csvFile)
             writer.writerows(rowsList)
+        upload_csv_database(self.drive)
+        #TODO here
         self.send_response_status_code(self.OK)
 
     def add_food_item(self, data):
+        print "add_food_item 1"
         name = data['name']
+        print "add_food_item 2"
         maxId = 1
         with open("database.csv", "r+") as csvFile:
+            print "add_food_item 3"
             reader = csv.reader(csvFile)
+            print "add_food_item 4"
             rowNumber = 0
             for row in reader:
                 if rowNumber == 0:
@@ -481,17 +248,22 @@ class MyHandler(BaseHTTPRequestHandler):
                     return
                 if int(row[0]) > maxId:
                     maxId = int(row[0])
-            reader = csv.reader(csvFile)
+            #reader = csv.reader(csvFile)
+            print "add_food_item 5"
             writer = csv.writer(csvFile)
             row = ['']*self.ROW_SIZE
             row[0] = maxId+1
+            print "add_food_item 6"
             row[1] = name
             row[22] = row[26] = row[30] = "zzz_null_image"
+            print "add_food_item 7"
             row[21] = row[23] = row[24] = row[25] = row[27] = row[28] = row[29] = row[31] = row[32] = -1
+            print "add_food_item 8"
             row = self.create_database_row_from_client_data(data, row)
+            print "add_food_item 9"
             writer.writerow(row)
-
-        self.send_response_status_code(self.OK, "id: "+str(maxId+1))
+        upload_csv_database(self.drive)
+        self.send_response_status_code(self.OK, simplejson.dumps({"id":maxId+1}))
 
     def get_image_properties(self, row, startIndex):
         imageWeight = row[startIndex]
@@ -524,7 +296,7 @@ class MyHandler(BaseHTTPRequestHandler):
         foodItem["arabicName"] = row[35]
         return foodItem
 
-    def get_all_food_items(self):
+    def get_all_food_items(self, valueToSkip="true"):
         database = []
         with open("database.csv", "r+") as csvFile:
             reader = csv.reader(csvFile)
@@ -537,9 +309,13 @@ class MyHandler(BaseHTTPRequestHandler):
                 if len(row) != self.ROW_SIZE: 
                     continue
 
-                if row[37] == "True":
+                if row[36].lower() == valueToSkip:
                     continue
-                database.append(self.create_food_item(row))
+                try:
+                    item = self.create_food_item(row)
+                    database.append(item)
+                except Exception,e:
+                    print e
                 rownum += 1
                 # if rownum == 40:
                 #     break
@@ -550,33 +326,8 @@ class MyHandler(BaseHTTPRequestHandler):
         print str(len(database))
         self.send_response_status_code(self.OK, simplejson.dumps(database))
 
-    def get_images_details_list(self, data):
-        imagesNames = ["firstImage", "secondImage", "thirdImage", "fourthImage"]
-        imagesFilenamesEndings = ["_s", "_m", "_l", "_xl"]
-        images = []
-        for index in range(len(imagesNames)):
-            name = imagesNames[index]
-            imageData = data[name]
-            if imageData == "null":
-                nullImagesNumber = len(imagesNames) - index
-                images.extend([1, "zzz_null_image", 1, 1] * nullImagesNumber)
-                break
-            else:
-                imageFile, imageHeight, imageWidth, imageWeight = self.get_image_details(imageData)
-                imageFileName = data["name"].lower().replace(" ", "_")+imagesFilenamesEndings[index]
-                with open("pictures/{}.png".format(imageFileName), "w") as decoded:
-                    decoded.write(base64.decodestring(imageFile.split(",")[1]))
-                images.extend([imageWeight, imageFileName, imageWidth, imageHeight])
-        print "get_images_details_list"
-        print str(images)
-        print images
-        program = 1
-        if images[5] != "zzz_null_image":
-            program = 2
-
-        return images, program
-
     def create_database_row_from_client_data(self, data, row):
+        print "create_database_row_from_client_data 1"
         for key in data:
             if key == "name":
                 row[1] = data[key]; continue
@@ -613,53 +364,76 @@ class MyHandler(BaseHTTPRequestHandler):
                 with open("pictures/{}.png".format(imageFileName), "w") as decoded:
                     decoded.write(base64.decodestring(data[key].split(",")[1]))
                 row[18] = imageFileName
+                upload_image_file(self.drive, imageFileName)
                 continue
             if key == "width":
-                row[19] = data[key]; continue
+                row[19] = str(int(round(float(data[key])))); continue
             if key == "height":
-                row[20] = data[key]; continue
+                row[20] = str(int(round(float(data[key])))); continue
             if key == "weight2":
                 row[21] = data[key]; continue
             if key == "img_file2":
+                if data[key] == "zzz_null_image":
+                    row[21] = "-1"
+                    row[22] = "zzz_null_image"
+                    row[23] = "-1"
+                    row[24] = "-1"
+                    continue
                 imageFileName = row[1].lower().replace(" ", "_")+"_m"
                 with open("pictures/{}.png".format(imageFileName), "w") as decoded:
                     decoded.write(base64.decodestring(data[key].split(",")[1]))
                 row[22] = imageFileName
                 row[2] = 2
+                upload_image_file(self.drive, imageFileName)
                 continue
             if key == "width2":
-                row[23] = data[key]; continue
+                row[23] = str(int(round(float(data[key])))); continue
             if key == "height2":
-                row[24] = data[key]; continue
+                row[24] = str(int(round(float(data[key])))); continue
             if key == "weight3":
                 row[25] = data[key]; continue
             if key == "img_file3":
+                if data[key] == "zzz_null_image":
+                    row[25] = "-1"
+                    row[26] = "zzz_null_image"
+                    row[27] = "-1"
+                    row[28] = "-1"
+                    continue
                 imageFileName = row[1].lower().replace(" ", "_")+"_l"
                 with open("pictures/{}.png".format(imageFileName), "w") as decoded:
                     decoded.write(base64.decodestring(data[key].split(",")[1]))
                 row[26] = imageFileName
+                upload_image_file(self.drive, imageFileName)
                 continue
             if key == "width3":
-                row[27] = data[key]; continue
+                row[27] = str(int(round(float(data[key])))); continue
             if key == "height3":
-                row[28] = data[key]; continue
+                row[28] = str(int(round(float(data[key])))); continue
             if key == "weight4":
                 row[29] = data[key]; continue
             if key == "img_file4":
+                if data[key] == "zzz_null_image":
+                    row[29] = "-1"
+                    row[30] = "zzz_null_image"
+                    row[31] = "-1"
+                    row[32] = "-1"
+                    continue
                 imageFileName = row[1].lower().replace(" ", "_")+"_xl"
                 with open("pictures/{}.png".format(imageFileName), "w") as decoded:
                     decoded.write(base64.decodestring(data[key].split(",")[1]))
                 row[30] = imageFileName
+                upload_image_file(self.drive, imageFileName)
                 continue
             if key == "width4":
-                row[31] = data[key]; continue
+                row[31] = str(int(round(float(data[key])))); continue
             if key == "height4":
-                row[32] = data[key]; continue
+                row[32] = str(int(round(float(data[key])))); continue
             if key == "menu_image":
                 imageFileName = row[1].lower().replace(" ", "_")+"_menu"
                 with open("pictures/{}.png".format(imageFileName), "w") as decoded:
                     decoded.write(base64.decodestring(data[key].split(",")[1]))
                 row[33] = imageFileName
+                upload_image_file(self.drive, imageFileName)
                 continue
             if key == "hebrew_name":
                 hebrewName = data[key]
@@ -671,57 +445,12 @@ class MyHandler(BaseHTTPRequestHandler):
                 if isinstance(arabicName, unicode):
                     arabicName = arabicName.encode("utf-8")
                 row[35] = arabicName; continue
-
+        print "create_database_row_from_client_data 2"
         if row[22].find("null") != -1: row[2] = 1
-        currentDateAndTime = dt.now()
-        currentDateAndTime = currentDateAndTime.strftime("%Y-%m-%d %H:%M")
-        row[36] = currentDateAndTime
-        row[37] = "False"
+        print "create_database_row_from_client_data 3"
+        row[36] = "False"
         return row
 
-
-    def create_database_row(self, data):
-        print "create_database_row 1"
-        data[""] = ""
-        newrow = []
-        attributes = ['itemId', 'name']
-        attributes.extend(['']*5)
-        print "create_database_row 2"
-        attributes.extend(["energy", "protein", "fatness", "carbohydrates", "calcium", "na", "potassium", "alcohol", "moisture", "foodType"])
-        for attribute in attributes:
-            print attribute
-            newrow.append(data[attribute])
-        print "create_database_row 3"
-        print data["mealType"]
-        mealType = data["mealType"]
-        for index in range(len(mealType)):
-            newrow[3+index] = mealType[index]
-        menuImageFile = data['menuImageFile']
-        images, program = self.get_images_details_list(data)
-        newrow[2] = program
-        newrow.extend(images)
-        print "create_database_row 4"
-
-        menuImageFileName = data["name"].lower().replace(" ", "_")+"_menu"
-        #creating image files if needed
-        with open("pictures/{}.png".format(menuImageFileName), "w") as decoded:
-            decoded.write(base64.decodestring(menuImageFile.split(",")[1]))
-
-        currentDateAndTime = dt.now()
-        currentDateAndTime = currentDateAndTime.strftime("%Y-%m-%d %H:%M")
-        hebrewName = data["hebrewName"]
-        arabicName = data["arabicName"]
-        if isinstance(hebrewName, unicode):
-            hebrewName = hebrewName.encode("utf-8")
-        if isinstance(arabicName, unicode):
-            arabicName = arabicName.encode("utf-8")
-        print "create_database_row 5"
-        newrow.extend([menuImageFileName, hebrewName, arabicName, currentDateAndTime])
-        newrow.append("False")
-        return newrow
-
-    def get_image_details(self, image): #parsing json element
-        return image['imageFile'], image['imageHeight'], image['imageWidth'], image['imageWeight']
 
     def get_image_file_url(self, image_file_name):
         if image_file_name.find("null") == -1:
@@ -731,50 +460,168 @@ class MyHandler(BaseHTTPRequestHandler):
                 image_read = image.read()
                 encoded = "data:image/png;base64,"+base64.encodestring(image_read)
                 return encoded
+            else:
+                print file_path + " doesn't exist"
         return "null"
 
-server_port = 3000
-ssl_key_file = "/home/woz/bon app/pythonweb/src/key.pem"
-ssl_certificate_file = "/home/woz/bon app/pythonweb/src/certFolder/server.pem"
+def download_csv_database(drive, gauth):
+    file_list = drive.ListFile({'q': "title='database.csv'"}).GetList()
+    if len(file_list) == 0:
+        return False
 
-# def add_column_to_db():
-#     rowsList = []
-#     with open("database_tablet.csv", "r") as csvFile:
-#         reader = csv.reader(csvFile) 
-#         for row in reader:
-#             newrow = row
-#             newrow.append(False)
-#             rowsList.append(newrow)
-#     with open("database_tablet.csv", "w") as csvFile:   
-#         writer = csv.writer(csvFile)
-#         writer.writerows(rowsList) 
+    file_id = file_list[0]['id']
 
-def main():
-    try: #
-        server = HTTPServer(('192.168.1.7', server_port), MyHandler)
-        #server.socket = ssl.wrap_socket (server.socket, keyfile="path/tp/key.pem", certfile='path/to/cert.pem', server_side=True)
-        server.socket = ssl.wrap_socket (server.socket, server_side=True,  
-                                         certfile=ssl_certificate_file)
-        sa = server.socket.getsockname()
-        print "Serving HTTP on", sa[0], "port", sa[1], "..."
-        print 'started httpserver...'
-        from datetime import date
-        print str(date.today())
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print '^C received, shutting down server'
-        server.socket.close()
+    drive_service = gauth.service
+    try:
+        request = drive_service.files().get_media(fileId=file_id)
+        fh = io.FileIO("database.csv", 'wb')
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            print "database.csv was downloaded" 
+        return True
+
+    except Exception, e:
+        print e
+        return False
+
+def upload_csv_database(drive):
+    file_list = drive.ListFile({'q': "title='{}'".format("database.csv")}).GetList()
+    for file_index in range(len(file_list)):
+        file_id = file_list[file_index]['id']
+        f = drive.CreateFile({'id': file_id})
+        f.Delete()
+    databaseFile = drive.CreateFile()
+    databaseFile.SetContentFile('database.csv')
+    databaseFile.Upload()
+    print "csv uploaded"
+
+def upload_image_file(drive, img_filename):
+    file_list = drive.ListFile({'q': "title='pictures' and mimeType = 'application/vnd.google-apps.folder'"}).GetList()
+    if len(file_list) != 1:
+        return
+    pictures_folder_id = file_list[0]['id']
+
+    file_list = drive.ListFile({'q': "title='{}.png'".format(img_filename)}).GetList()
+    for file_index in range(len(file_list)):
+        print "upload_image_file in for"
+        png_id = file_list[file_index]['id']
+        f = drive.CreateFile({'id': png_id})
+        f.SetContentFile('pictures/{}.png'.format(img_filename))
+        f.Upload()
+        print "seems to be uploaded"
+        return
+
+    imgFile = drive.CreateFile({"parents": [{"id": pictures_folder_id}], 'title': "{}.png".format(img_filename)})
+    for key in imgFile:
+        print key
+        print imgFile[key]
+        print "-------"
+    imgFile.SetContentFile('pictures/{}.png'.format(img_filename))
+    imgFile.Upload()
+
+def print_all_files_from_drive(drive, gauth):
+    file_list = drive.ListFile({'q': "title='pictures' and mimeType = 'application/vnd.google-apps.folder'"}).GetList()
+    if len(file_list) != 1:
+        return
+    pictures_folder_id = file_list[0]['id']
+    drive_service = gauth.service
+    print str(type(drive_service))
+    counter = 0
+    request = drive_service.files().list().execute()
+    for item in request.get('items'):
+        #print "parents " + str(item.get("parents"))
+        print "trashed " + str(item.get("labels")["trashed"])
+        print "explicitlyTrashed " + str(item.get("explicitlyTrashed"))
+        if item.get("parents")[0]["id"] == pictures_folder_id:
+            counter += 1
+        # if item.get("title").find(".png") != -1:
+        #     counter += 1
+        # else:
+        #     print item.get("mimeType")
+        #     print item.get("title")
+    page_token = request.get('nextPageToken')
+    while page_token is not None:
+        request = drive_service.files().list(pageToken=page_token).execute()
+        for item in request.get('items'):
+            print "trashed " + str(item.get("labels")["trashed"])
+            print "explicitlyTrashed " + str(item.get("explicitlyTrashed"))
+            if item.get("parents")[0]["id"] == pictures_folder_id:
+                counter += 1
+        page_token = request.get('nextPageToken')
+    print str(counter)
+    
+def get_updates(drive, gauth):
+    if download_csv_database(drive, gauth) == False:
+        print "csv database download failed"
+        #return
+    if not os.path.isdir("pictures"):
+        os.makedirs("pictures")
+        download_image_files(drive, gauth)
+    else:
+        drive_service = gauth.service
+        if os.path.isfile("last_page.txt"):
+            last_page_file = open("last_page.txt", "r")
+            last_page = last_page_file.readline()
+            last_page_file.close() 
+            page_token = last_page
+            updatedFilesIds = []
+            while page_token is not None:
+                response = drive_service.changes().list(pageToken=page_token, 
+                                                        spaces='drive').execute()
+                for change in response.get('items'):
+                    # Process change
+                    if change.get('deleted'): continue
+                    updatedFilesIds.append(change.get('fileId'))
+                if 'newStartPageToken' in response:
+                    # Last page, save this token for the next polling interval
+                    last_page = response.get('newStartPageToken')
+                page_token = response.get('nextPageToken')
+            with open("last_page.txt", "w") as last_page_file:
+                last_page_file.write(last_page)
+
+            download_img_files(drive, gauth, updatedFilesIds)
+        else:
+            response = drive_service.changes().getStartPageToken().execute()
+            last_page = response.get('startPageToken')
+            with open("last_page.txt", "w") as last_page_file:
+                last_page_file.write(last_page)
+            download_img_files(drive, gauth)
+
+###TODOOO: IF WE NEED GAUTH
+
+def download_img_files(drive, gauth, updatedFilesIds=None):
+    file_list = drive.ListFile({'q': "title='pictures' and mimeType = 'application/vnd.google-apps.folder'"}).GetList()
+    if len(file_list) != 1:
+        return
+    pictures_folder_id = file_list[0]['id']
+    drive_service = gauth.service
+    file_list = drive.ListFile({'q': "'{}' in parents and (mimeType='image/jpeg' or mimeType='image/png')".format(pictures_folder_id)}).GetList()
+    for file1 in file_list:
+        if file1['labels']['trashed'] == True: continue
+        if updatedFilesIds != None:
+            if file1['id'] not in updatedFilesIds:
+                continue
+        print file1['title']
+        download_img_file(drive_service, file1['id'], file1['title'])
+
+###TODOOO: IF WE NEED GAUTH
+
+def download_img_file(drive_service, fileId, title):
+    try:
+        request = drive_service.files().get_media(fileId=fileId)
+        fh = io.FileIO(format(title), 'wb')
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            shutil.move(title, 'pictures/{}'.format(title))
+            print "{} downloaded".format(title )
+    except Exception, e:
+        print e
+
+
 
 if __name__ == '__main__':
     main()
-
-# In Java files:
-# 1)to add checking if a file was deleted
-# 2)to add deleting request 
-# 3)to add delete function to databaseHandler
-# 4)to check what happens when new foodItem is created, what id it gets
-# 5)to check if editing food item works well
-# 6)to end all this stuff with generating password
-# 7)to check how to save password in browser
-# 8)to add handling deleted items on the website and on tablets
-# 9)to check how many items can be send in one request

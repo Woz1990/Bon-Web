@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="css/manage users.css">
+<div class="embed-nav group" id="embed-nav">
+	<ul>
+	  <li><a href="#login">Log Out</a></li>
+	  <li><a href="#showAllFoodItems">Food List</a></li>
+	  <li><a href="#addUpdateItem">Add Food Item</a></li>
+	  <li><a href="#manageUsers">Manage Users</a></li>
+	</ul>
+</div>
+
+<div class="container center" id="usersContainer">
+    <form ng-submit="Approve()">
+         <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="nameSection">First Name</th>
+                    <th class="nameSection">Last Name</th>
+                    <th class="emailSection">Email</th>
+                    <th class="passwordSection">Password</th>
+                    <th class="actionsSection"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr bindonce data-ng-repeat="user in users">
+                    <td>
+                    	<div bo-bind="user.first_name"></div>
+                    </td>
+                	<td>
+                    	<div bo-bind="user.last_name"></div>
+                    </td>
+                    <td>
+                        <div bo-bind="user.email"></div>
+                    </td>
+                    <td>
+                        <div></div>
+                    </td>
+                	<td>
+                    	<input type="button" class="btn btn-basic" ng-click="openQuestionWindow(user)" value="Remove">
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr ng-repeat="user in usersToApprove">
+                    <td>
+                        <input type="text" class="form-control" ng-model="user.first_name" required/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="user.last_name" required/>
+                    </td>
+                    <td>
+                        <input type="email" class="form-control" ng-model="user.email" ng-change="CheckAllEmailsValidity()" required/>
+                        <div ng-show="!user.emailValid">Email is used already</div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="user.password"/>
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-basic" ng-click="RemoveUserToApprove(user)" value="Remove">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form-group">
+        	<input type="button" class="btn btn-primary addnew pull-right" ng-click="AddNew()" value="Add New">
+        	<input ng-if="!allApproved" type="submit" class="btn btn-danger pull-right" value="Approve">
+        </div>
+    </form>
+</div>
